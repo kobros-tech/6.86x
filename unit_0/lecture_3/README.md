@@ -201,7 +201,7 @@ These values are plotted directly by the notebook.
 For each **fixed** value of `alpha`, the optimizer finds the best model parameters:
 
 $$
-\left(\theta^{*}(\alpha),\theta_0^{*}(\alpha)\right)
+(\theta^{*}(\alpha),\theta_0^{*}(\alpha))
 =\arg\min_{\theta,\theta_0}J(\theta,\theta_0;\alpha).
 $$
 
@@ -312,7 +312,7 @@ J=L+\alpha R
 $$
 
 $$
-\left(\theta^{*}(\alpha),\theta_0^{*}(\alpha)\right)
+(\theta^{*}(\alpha),\theta_0^{*}(\alpha))
 =\arg\min_{\theta,\theta_0}J(\theta,\theta_0;\alpha)
 $$
 
