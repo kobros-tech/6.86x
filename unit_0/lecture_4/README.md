@@ -6,7 +6,7 @@ This directory contains the Lecture 4 and Recitation 4 demo projects as executab
 
 ## 1. What Lecture 4 is about
 
-Lecture 3 focused on **learning model parameters** such as `theta` from training data.
+Lecture 3 focused on learning model parameters such as `theta` from training data.
 
 Lecture 4 introduces a second question:
 
@@ -48,7 +48,7 @@ The learning algorithm changes `theta` during training to minimize the objective
 
 ### Hyperparameters
 
-Hyperparameters are chosen **before/during the model-selection process**, rather than being directly learned as part of the parameter optimization.
+Hyperparameters are chosen before/during the model-selection process, rather than being directly learned as part of the parameter optimization.
 
 Examples include:
 
@@ -539,7 +539,7 @@ For a fixed `alpha`, find good parameters:
 $$
 \theta^*(\alpha)
 =
-\arg\min_{\theta}J(\theta;\alpha).
+\arg\min_{\theta} J(\theta;\alpha).
 $$
 
 This is the optimization problem discussed in the earlier material.
@@ -551,7 +551,7 @@ Use cross-validation to decide which `alpha` is best:
 $$
 \alpha^*
 =
-\arg\max_{\alpha}S(\alpha).
+\arg\max_{\alpha} S(\alpha).
 $$
 
 So Lecture 4 effectively introduces a two-level process:
@@ -651,63 +651,57 @@ when higher validation score is better.
 
 The notebooks in this directory turn these ideas into executable experiments:
 
-- **Lecture notebook** — follows the lecture's practical SVM/cross-validation example and produces the plots and logs.
-- **Recitation notebook** — provides additional hands-on implementation and experimentation.
+- **Lecture notebook** — follows the lecture's practical SVM/cross-validation example.
+- **Recitation notebook** — reinforces the same concepts with hands-on implementation and experiments.
 
-The intended learning path is:
-
-```text
-README study guide
-       |
-       v
-Lecture 4 notebook
-       |
-       v
-Recitation notebook
-       |
-       v
-Experiment with alpha, K, folds, scaling, and model performance
-```
-
-Run the notebooks from top to bottom so that the figures, intermediate values, validation scores, and final model results are generated interactively.
+Run the notebooks from top to bottom to reproduce the calculations, logs, and figures.
 
 ---
 
-# 21. Connection with the previous lecture
-
-The progression across the lectures is intentional:
+# 21. One-page mental model
 
 ```text
-Lecture 3
-    |
-    +--> linear classification
-    +--> objective/loss
-    +--> regularization
-    +--> optimize theta
-    |
-    v
-Lecture 4
-    |
-    +--> alpha is not fixed anymore
-    +--> compare candidate alphas
-    +--> K-fold cross-validation
-    +--> select alpha*
-    +--> train final model
-    +--> evaluate on unseen test data
+REGULARIZED LEARNING
+
+For a chosen alpha:
+
+    minimize
+
+        J(theta; alpha)
+        = loss(theta) + alpha * regularization(theta)
+
+    over theta
+
+            |
+            v
+      trained parameters theta*
+
+            |
+            v
+       validation score
+
+Repeat for many alpha values
+
+            |
+            v
+
+      alpha* = argmax S(alpha)
+
+            |
+            v
+
+   retrain final model with alpha*
+
+            |
+            v
+
+      untouched test evaluation
 ```
 
-So the central new idea is **not a replacement for optimization**.
+The key idea is simple:
 
-It is a strategy for answering:
-
-> **Which version of the model should we train?**
-
-Optimization answers:
-
-> **Given this model and this alpha, what parameters theta should it use?**
-
-Cross-validation answers:
-
-> **Which alpha is likely to generalize best?**
-
-That distinction is the main conceptual bridge from Lecture 3 to Lecture 4.
+> **Lecture 3 asks: "What parameters should the model learn?"**
+>
+> **Lecture 4 asks: "How should we choose the hyperparameter that controls that learning?"**
+>
+> The answer is **cross-validation**.
