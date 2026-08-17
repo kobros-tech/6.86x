@@ -29,7 +29,7 @@ The notebook follows the same order we study the material:
 For an input vector $x$, the classifier score is
 
 $$
-f(x)=\theta^T x+\theta_0.
+f(x)=\theta^T x+\theta_0
 $$
 
 Prediction is based on the sign of the score:
@@ -37,14 +37,14 @@ Prediction is based on the sign of the score:
 $$
 \hat{y}=\begin{cases}
 +1 & \text{if } f(x)\ge 0,\\
--1 & \text{if } f(x)<0.
+-1 & \text{if } f(x)<0
 \end{cases}
 $$
 
 The decision boundary is
 
 $$
-\theta^T x+\theta_0=0.
+\theta^T x+\theta_0=0
 $$
 
 In two dimensions this is a line. In higher dimensions it is a hyperplane.
@@ -56,7 +56,7 @@ In two dimensions this is a line. In higher dimensions it is a hyperplane.
 For training example $(x_i,y_i)$ with $y_i\in\{-1,+1\}$:
 
 $$
-z_i=y_i\left(\theta^T x_i+\theta_0\right).
+z_i=y_i\left(\theta^T x_i+\theta_0\right)
 $$
 
 The sign tells us whether the example is correctly classified, while the magnitude measures how confidently it lies on the correct side of the boundary.
@@ -64,7 +64,7 @@ The sign tells us whether the example is correctly classified, while the magnitu
 The SVM margin requirement is
 
 $$
-z_i\ge 1.
+z_i\ge 1
 $$
 
 ---
@@ -74,7 +74,7 @@ $$
 The hinge loss for one example is
 
 $$
-L_i=\max\left(0,1-z_i\right).
+L_i=\max\left(0,1-z_i\right)
 $$
 
 Therefore:
@@ -86,7 +86,7 @@ Therefore:
 The average hinge loss is
 
 $$
-L(\theta,\theta_0)=\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^T x_i+\theta_0\right)\right).
+L(\theta,\theta_0)=\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^T x_i+\theta_0\right)\right)
 $$
 
 ---
@@ -96,7 +96,7 @@ $$
 We penalize large weights with
 
 $$
-R(\theta)=\frac{1}{2}\lVert\theta\rVert_2^2.
+R(\theta)=\frac{1}{2}\lVert\theta\rVert_2^2
 $$
 
 The bias is not regularized in our implementation.
@@ -113,7 +113,7 @@ The hyperparameter `alpha` controls the strength of this penalty.
 For a fixed value of `alpha`, the training objective is
 
 $$
-J(\theta,\theta_0;\alpha)=L(\theta,\theta_0)+\alpha R(\theta).
+J(\theta,\theta_0;\alpha)=L(\theta,\theta_0)+\alpha R(\theta)
 $$
 
 Expanded:
@@ -121,7 +121,7 @@ Expanded:
 $$
 J(\theta,\theta_0;\alpha)
 =\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^T x_i+\theta_0\right)\right)
-+\frac{\alpha}{2}\lVert\theta\rVert_2^2.
++\frac{\alpha}{2}\lVert\theta\rVert_2^2
 $$
 
 The first term asks:
@@ -141,27 +141,27 @@ Training minimizes their combined value.
 For an active example, where $z_i<1$:
 
 $$
-\nabla_{\theta}L_i=-y_i x_i.
+\nabla_{\theta}L_i=-y_i x_i
 $$
 
 For the bias:
 
 $$
-\frac{\partial L_i}{\partial\theta_0}=-y_i.
+\frac{\partial L_i}{\partial\theta_0}=-y_i
 $$
 
 Including the L2 penalty gives
 
 $$
 \nabla_{\theta}J
-=-\frac{1}{n}\sum_{i:z_i<1}y_i x_i+\alpha\theta.
+=-\frac{1}{n}\sum_{i:z_i<1}y_i x_i+\alpha\theta
 $$
 
 and
 
 $$
 \frac{\partial J}{\partial\theta_0}
-=-\frac{1}{n}\sum_{i:z_i<1}y_i.
+=-\frac{1}{n}\sum_{i:z_i<1}y_i
 $$
 
 Notice that regularization affects $\theta$ but not $\theta_0$.
@@ -179,7 +179,7 @@ $$
 and
 
 $$
-\theta_0\leftarrow\theta_0-\eta\frac{\partial J}{\partial\theta_0}.
+\theta_0\leftarrow\theta_0-\eta\frac{\partial J}{\partial\theta_0}
 $$
 
 The notebook implements these updates directly rather than hiding them behind a machine-learning library.
@@ -198,11 +198,13 @@ These values are plotted directly by the notebook.
 
 ## 8. The inner optimization problem
 
-For each **fixed** value of `alpha`, the optimizer finds the best model parameters:
+For each **fixed** value of `alpha`, the optimizer finds the best model parameters.
+
+To keep the notation unambiguous and GitHub-safe, we call these parameters the **best parameters for alpha**:
 
 $$
-(\theta^{*}(\alpha),\theta_0^{*}(\alpha))
-=\arg\min_{\theta,\theta_0}J(\theta,\theta_0;\alpha).
+(\theta_{\mathrm{best}}(\alpha),\theta_{0,\mathrm{best}}(\alpha))
+=\arg\min_{\theta,\theta_0}J(\theta,\theta_0;\alpha)
 $$
 
 This is the key connection to Lecture 4.
@@ -236,13 +238,16 @@ Lecture 3 solves the **inner optimization**:
 $$
 \text{fixed }\alpha
 \quad\Longrightarrow\quad
-\text{optimize }\theta,\theta_0.
+\text{optimize }\theta,\theta_0
 $$
 
-Lecture 4 introduces the **outer model-selection problem**. For candidate values of `alpha`, cross-validation measures validation performance and selects the best one:
+Lecture 4 introduces the **outer model-selection problem**. For candidate values of `alpha`, cross-validation measures validation performance and selects the best one.
+
+We call the selected value the **best alpha**:
 
 $$
-\alpha^{*}=\arg\max_{\alpha}S(\alpha).
+\alpha_{\mathrm{best}}
+=\arg\max_{\alpha}S(\alpha)
 $$
 
 Conceptually:
@@ -260,7 +265,7 @@ measure validation performance
 repeat for every candidate alpha
         |
         v
-choose alpha*
+choose alpha_best
         |
         v
 train the final model
@@ -312,14 +317,14 @@ J=L+\alpha R
 $$
 
 $$
-(\theta^{*}(\alpha),\theta_0^{*}(\alpha))
+(\theta_{\mathrm{best}}(\alpha),\theta_{0,\mathrm{best}}(\alpha))
 =\arg\min_{\theta,\theta_0}J(\theta,\theta_0;\alpha)
 $$
 
 and finally, in Lecture 4,
 
 $$
-\alpha^{*}=\arg\max_{\alpha}S(\alpha).
+\alpha_{\mathrm{best}}=\arg\max_{\alpha}S(\alpha)
 $$
 
 The last two equations are especially important: the first is the **inner parameter optimization**, while the second is the **outer hyperparameter selection**.
