@@ -36,9 +36,9 @@ Both notebooks are self-contained and generate their plots and logs when execute
 
 We reuse the same linear SVM objective and parameter-optimization idea from Lecture 3. We do **not** invent a new optimizer merely for Lecture 4. The new strategy is **model selection by cross-validation**:
 
-\[
+$$
 \alpha^* = \arg\max_{\alpha} S(\alpha),
-\]
+$$
 
 where `S(alpha)` is the mean validation score over the K folds.
 
