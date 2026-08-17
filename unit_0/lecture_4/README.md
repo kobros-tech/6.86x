@@ -67,11 +67,7 @@ Lecture 4 concentrates on selecting $\alpha$.
 The general idea is to combine a data-fitting term with a regularization term:
 
 $$
-J(\theta;\alpha)
-=
-\text{loss}(\theta)
-+
-\alpha\,\text{regularization}(\theta)
+J(\theta;\alpha) = \text{loss}(\theta) + \alpha\,\text{regularization}(\theta)
 $$
 
 The first term asks:
@@ -145,9 +141,7 @@ validation accuracy
 The best value is the one producing the highest validation score:
 
 $$
-\alpha^*
-=
-\arg\max_{\alpha} S(\alpha)
+\alpha^* = \arg\max_{\alpha} S(\alpha)
 $$
 
 when $S(\alpha)$ is a score where larger is better, such as accuracy.
@@ -155,9 +149,7 @@ when $S(\alpha)$ is a score where larger is better, such as accuracy.
 If we instead use a validation error/objective where smaller is better:
 
 $$
-\alpha^*
-=
-\arg\min_{\alpha} J_{\mathrm{validation}}(\alpha)
+\alpha^* = \arg\min_{\alpha} J_{\mathrm{validation}}(\alpha)
 $$
 
 ---
@@ -275,28 +267,19 @@ Every example gets an opportunity to be in the validation set, while the remaini
 For a candidate $\alpha$, suppose the five validation accuracies are:
 
 $$
-S_1(\alpha),\quad
-S_2(\alpha),\quad
-S_3(\alpha),\quad
-S_4(\alpha),\quad
-S_5(\alpha)
+S_1(\alpha),\quad S_2(\alpha),\quad S_3(\alpha),\quad S_4(\alpha),\quad S_5(\alpha)
 $$
 
 The mean cross-validation score is:
 
 $$
-S(\alpha)
-=
-\frac{1}{K}
-\sum_{k=1}^{K} S_k(\alpha)
+S(\alpha) = \frac{1}{K}\sum_{k=1}^{K} S_k(\alpha)
 $$
 
 For $K = 5$:
 
 $$
-S(\alpha)
-=
-\frac{S_1(\alpha)+S_2(\alpha)+S_3(\alpha)+S_4(\alpha)+S_5(\alpha)}{5}
+S(\alpha) = \frac{S_1(\alpha)+S_2(\alpha)+S_3(\alpha)+S_4(\alpha)+S_5(\alpha)}{5}
 $$
 
 This gives one performance estimate for that particular value of $\alpha$.
@@ -310,9 +293,7 @@ $$
 Then choose:
 
 $$
-\boxed{
-\alpha^* = \arg\max_{\alpha} S(\alpha)
-}
+\boxed{\alpha^* = \arg\max_{\alpha} S(\alpha)}
 $$
 
 when the score is accuracy or another metric where larger is better.
@@ -404,9 +385,7 @@ The model itself can use all available features.
 The lecture standardizes the input features to approximately:
 
 $$
-\text{mean} = 0,
-\qquad
-\text{variance} = 1
+\text{mean} = 0,\qquad \text{variance} = 1
 $$
 
 Scaling is important for models involving parameter magnitudes and regularization because features measured on very different scales can otherwise affect optimization and the regularization trade-off unevenly.
@@ -455,21 +434,13 @@ alpha = 1.0
 For each candidate:
 
 $$
-\alpha_i
-\longrightarrow
-\text{train K models}
-\longrightarrow
-\text{K validation scores}
-\longrightarrow
-\text{mean score } S(\alpha_i)
+\alpha_i \longrightarrow \text{train K models} \longrightarrow \text{K validation scores} \longrightarrow \text{mean score } S(\alpha_i)
 $$
 
 Finally:
 
 $$
-\alpha^*
-=
-\arg\max_i S(\alpha_i)
+\alpha^* = \arg\max_i S(\alpha_i)
 $$
 
 This is a **hyperparameter search**.
@@ -537,9 +508,7 @@ This is one of the most important ideas in Lecture 4.
 For a fixed $\alpha$, find good parameters:
 
 $$
-\theta^*(\alpha)
-=
-\arg\min_{\theta} J(\theta;\alpha)
+\theta^*(\alpha) = \arg\min_{\theta} J(\theta;\alpha)
 $$
 
 This is the parameter-optimization problem discussed in the earlier material.
@@ -549,9 +518,7 @@ This is the parameter-optimization problem discussed in the earlier material.
 Use cross-validation to decide which $\alpha$ is best:
 
 $$
-\alpha^*
-=
-\arg\max_{\alpha} S(\alpha)
+\alpha^* = \arg\max_{\alpha} S(\alpha)
 $$
 
 So Lecture 4 introduces a **two-level process**:
@@ -637,9 +604,7 @@ If you remember only the following, you have the core of Lecture 4:
 10. Choose
 
 $$
-\boxed{
-\alpha^* = \arg\max_{\alpha} S(\alpha)
-}
+\boxed{\alpha^* = \arg\max_{\alpha} S(\alpha)}
 $$
 
 when higher validation score is better.
@@ -651,95 +616,15 @@ when higher validation score is better.
 
 ## 20. Demo notebooks
 
-The notebooks in this directory turn the lecture concepts into executable experiments.
+The notebooks in this directory implement the ideas above with executable code, plots, and printed results.
 
-The recommended study order is:
+The intended progression is:
 
-1. **Lecture notebook** — reproduce the lecture's SVM and cross-validation example.
-2. **Recitation notebook** — reinforce regularization and hyperparameter-selection concepts with additional experiments.
+1. understand the regularized objective;
+2. observe the effect of changing $\alpha$;
+3. perform K-fold cross-validation;
+4. select $\alpha^*$;
+5. train the final model;
+6. inspect its performance and decision boundary.
 
-The notebooks are intended to be executed from top to bottom so that figures, metrics, and training output are produced interactively.
-
----
-
-## 21. Connection to Lecture 3
-
-Lecture 3 and Lecture 4 should be viewed as parts of one learning pipeline:
-
-```text
-LECTURE 3
-
-training data
-     |
-     v
-choose a fixed alpha
-     |
-     v
-optimize theta
-     |
-     v
-trained model
-
-
-LECTURE 4
-
-candidate alphas
-     |
-     v
-cross-validation
-     |
-     v
-choose alpha*
-     |
-     v
-retrain theta using alpha*
-     |
-     v
-final model
-     |
-     v
-untouched test set
-```
-
-The key idea is:
-
-> **Lecture 3 teaches us how to learn the model parameters. Lecture 4 teaches us how to choose the hyperparameters that control that learning process.**
-
----
-
-## 22. Core equations
-
-For a fixed $\alpha$, parameter learning solves:
-
-$$
-\theta^*(\alpha)
-=
-\arg\min_{\theta} J(\theta;\alpha)
-$$
-
-Cross-validation estimates the performance of that choice:
-
-$$
-S(\alpha)
-=
-\frac{1}{K}
-\sum_{k=1}^{K} S_k(\alpha)
-$$
-
-Hyperparameter selection then solves:
-
-$$
-\alpha^*
-=
-\arg\max_{\alpha} S(\alpha)
-$$
-
-or, when working with an error/objective:
-
-$$
-\alpha^*
-=
-\arg\min_{\alpha} J_{\mathrm{validation}}(\alpha)
-$$
-
-These equations describe the central idea of Lecture 4: **optimize parameters inside, select hyperparameters outside**.
+The notebooks are designed to complement the lecture rather than replace the conceptual explanations above.
