@@ -1,13 +1,13 @@
 # Lecture 1 — Introduction and Linear Classification
 
-Lecture 1 introduces the central machine-learning problem of learning a classifier from labeled examples. It then restricts the hypothesis class to linear classifiers and introduces the perceptron update rule.
+Lecture 1 introduces the machine-learning problem of learning a classifier from labeled examples. It then restricts the hypothesis class to linear classifiers and introduces the perceptron update rule.
 
-The lecture directory is organized as **one executable notebook + one study README**:
+Lecture 1 follows the same **notebook + study README** structure used throughout this repository:
 
 - `lecture_1_linear_classification.ipynb` — the executable learning artifact
 - `README.md` — the mathematical study guide
 
-The notebook is designed to be run from top to bottom in Jupyter or VS Code. It keeps the calculations, small examples, visualizations, and perceptron implementation visible instead of hiding the mechanism behind a library.
+The notebook is the primary learning artifact. Open it in Jupyter or VS Code and run it from top to bottom. It contains the calculations, NumPy implementations, visualizations, and experiments.
 
 ---
 
@@ -16,71 +16,70 @@ The notebook is designed to be run from top to bottom in Jupyter or VS Code. It 
 A supervised classification problem starts with labeled training examples
 
 $$
-(x_1,y_1),\ldots,(x_n,y_n),
+(x_1,y_1),\ldots,(x_n,y_n)
 $$
 
-where each input $x_i$ is represented by a vector and, for binary classification,
+where each input $x_i$ is represented by a feature vector and, for binary classification,
 
 $$
-y_i \in \{-1,+1\}.
+y_i\in\{-1,+1\}
 $$
 
-We want to learn a classifier
+The goal is to learn a classifier
 
 $$
-f : \mathbb{R}^d \rightarrow \{-1,+1\}
+f:\mathbb{R}^d\rightarrow\{-1,+1\}
 $$
 
-using the training set so that it also works well on **new, unseen examples**.
+that performs well not only on the training examples but also on **new, unseen examples**.
 
-This distinction is fundamental:
+This is the idea of **generalization**.
 
-- fitting the training examples is not the whole goal;
-- we want a rule that **generalizes** beyond the training set.
-
-### Why not memorize the training set?
-
-With enough freedom, it is possible to construct a rule that memorizes every training example. Such a rule can have zero training error while behaving unpredictably on examples that were never seen during training.
-
-This motivates a central machine-learning idea: instead of considering every possible function, choose a useful **hypothesis class** and learn within that class.
+A model that simply memorizes the training set may achieve very low training error without learning a useful rule for new data. Machine learning therefore asks us to choose a useful **hypothesis class** and learn an appropriate function within that class.
 
 ---
 
-## 2. Model selection
+## 2. Hypothesis classes and model selection
 
-The hypothesis class should be neither unnecessarily large nor unnecessarily restrictive.
+A hypothesis class is a collection of candidate functions that the learning algorithm is allowed to consider.
 
-A very large class can contain functions that fit the training data extremely well but generalize poorly. A class that is too small may not contain a useful classifier at all.
+A class that is too restrictive may not contain a good classifier. A class that is unnecessarily flexible may fit the training data extremely well while generalizing poorly.
 
-Lecture 1 therefore makes an explicit modeling choice: start with the class of **linear classifiers**.
+Lecture 1 therefore makes a concrete modeling choice: begin with the class of **linear classifiers**.
 
-This is the beginning of the model-selection perspective that will become more important later in the course.
+This distinction is important:
+
+- the **hypothesis class** describes the family of models we allow;
+- the **parameters** determine one particular model inside that family.
+
+Later lectures build on this distinction when they introduce regularization, optimization, and hyperparameter selection.
 
 ---
 
 ## 3. Linear classifier through the origin
 
-For the first linear classifier, the score is
+For the first linear classifier, define the score:
 
 $$
-\theta^T x,
+s(x)=\theta^{T}x
 $$
 
-where
+where the parameter vector is
 
 $$
-\theta =
+\theta=
 \begin{bmatrix}
 \theta_1\\
+\theta_2\\
 \vdots\\
 \theta_d
-\end{bmatrix}.
+\end{bmatrix}
 $$
 
-The classifier is
+The classifier predicts according to the sign of the score:
 
 $$
-f(x;\theta)=\operatorname{sign}(\theta^T x).
+f(x;\theta)=\mathrm{sign}\left(\theta^{T}x\right)
 $$
 
 Equivalently,
@@ -88,12 +87,12 @@ Equivalently,
 $$
 f(x;\theta)=
 \begin{cases}
-+1 & \text{if } \theta^T x \ge 0,\\
--1 & \text{if } \theta^T x < 0.
++1 & \text{if } \theta^{T}x\geq 0,\\
+-1 & \text{if } \theta^{T}x<0
 \end{cases}
 $$
 
-The important point is that the **score** is real-valued, while the final prediction is binary.
+The score $\theta^{T}x$ is a real number. The prediction $f(x;\theta)$ is one of the two class labels, $-1$ or $+1$.
 
 ---
 
@@ -102,96 +101,95 @@ The important point is that the **score** is real-valued, while the final predic
 The prediction changes when the score crosses zero. Therefore the decision boundary is
 
 $$
-\theta^T x = 0.
+\theta^{T}x=0
 $$
 
-In two dimensions,
+For two features,
 
 $$
-\theta_1x_1+\theta_2x_2=0,
+\theta_1x_1+\theta_2x_2=0
 $$
 
-which is a line through the origin.
+which is a straight line through the origin.
 
 In $d$ dimensions, the boundary is a $(d-1)$-dimensional hyperplane.
 
-The two regions are determined by the sign of the score:
+The two sides of the boundary are determined by the score:
 
-- $\theta^T x > 0$ gives class $+1$;
-- $\theta^T x < 0$ gives class $-1$;
-- $\theta^T x = 0$ lies on the decision boundary.
+- $\theta^{T}x>0$ gives class $+1$;
+- $\theta^{T}x<0$ gives class $-1$;
+- $\theta^{T}x=0$ lies on the decision boundary.
 
 ---
 
-## 5. The geometry of $\theta$
+## 5. Geometry of the parameter vector
 
-The parameter vector $\theta$ is **normal (perpendicular)** to the decision boundary.
+The vector $\theta$ is **normal**, or perpendicular, to the decision boundary.
 
-This follows directly from the equation
-
-$$
-\theta^T x=0.
-$$
-
-In two dimensions, if the boundary is
+For two features, the boundary is
 
 $$
-\theta_1x_1+\theta_2x_2=0,
+\theta_1x_1+\theta_2x_2=0
 $$
 
-then $[\theta_1,\theta_2]^T$ points perpendicular to the line.
+and the normal vector is
 
-The dot product also tells us how the score changes as we move through feature space. Moving in the direction of $\theta$ increases $\theta^Tx$ most rapidly.
+$$
+\begin{bmatrix}
+\theta_1\\
+\theta_2
+\end{bmatrix}
+$$
 
-The notebook visualizes this relationship with a simple two-dimensional dataset.
+The dot product also explains the direction of increasing score. Moving in the direction of $\theta$ increases $\theta^{T}x$ most rapidly.
+
+The notebook visualizes both the decision boundary and the parameter vector so that the algebra and geometry can be connected directly.
 
 ---
 
 ## 6. A limitation of linear classifiers
 
-A linear classifier sees an input as a vector of numbers and combines those numbers using a weighted sum.
+A linear classifier combines the input features through a weighted sum. It therefore depends strongly on how the data are represented and on the structure allowed by the hypothesis class.
 
-For image data, for example, this means that the classifier does not automatically understand spatial relationships between neighboring pixels. If the same permutation of pixel positions is applied consistently to every example, the linear model can still operate on the reordered vectors without knowing that the pixels used to be neighbors.
+For example, a linear classifier applied to image pixels does not automatically understand that neighboring pixels are spatially related. The model receives a vector of numbers; any useful structure must be represented through the features or through a richer hypothesis class.
 
-This is an important modeling lesson:
+The general lesson is:
 
-> A model can only use structure that is represented in its input representation and hypothesis class.
+> A model can only exploit structure that is represented in its input and allowed by its hypothesis class.
 
-Linear classifiers are useful and mathematically simple, but they do not automatically capture every kind of structure in the data.
+This is why choosing the model family is an important part of machine learning.
 
 ---
 
 ## 7. Training error
 
-Once a hypothesis class has been chosen, we still need to select a particular classifier from that class.
+After choosing a hypothesis class, we need to select a particular classifier from that class.
 
 For a classifier $f$ and training examples $(x_i,y_i)$, the zero-one training error is
 
 $$
-\widehat{E}(f)
-=
-\frac{1}{n}
-\sum_{i=1}^{n}
-\mathbf{1}\left[f(x_i)\ne y_i\right].
+\widehat{E}(f)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}\left[f(x_i)\ne y_i\right]
 $$
 
-Here,
+where the indicator is defined by
 
 $$
-\mathbf{1}[\text{condition}]
+\mathbf{1}[A]=
+\begin{cases}
+1 & \text{if } A \text{ is true},\\
+0 & \text{if } A \text{ is false}
+\end{cases}
 $$
 
-is $1$ when the condition is true and $0$ otherwise.
+Therefore, training error is simply the fraction of training examples that are classified incorrectly.
 
-So the training error is simply the fraction of training examples classified incorrectly.
-
-The notebook computes this directly for a small dataset so that the definition is connected to actual predictions.
+The notebook calculates this quantity directly from predictions and labels.
 
 ---
 
-## 8. General loss functions
+## 8. Loss functions
 
-Zero-one loss treats every mistake equally. More generally, we can define a loss function
+Zero-one loss treats every classification mistake equally. More generally, we can define a loss function
 
 $$
 L(y,f(x))
@@ -199,37 +197,37 @@ $$
 
 that measures how undesirable a prediction is.
 
-The empirical objective can then be written as
+The average loss over the training set is
 
 $$
-\frac{1}{n}
-\sum_{i=1}^{n}
-L\left(y_i,f(x_i)\right).
+\frac{1}{n}\sum_{i=1}^{n}L\left(y_i,f(x_i)\right)
 $$
 
-Later lectures will replace the discontinuous zero-one classification error with optimization-friendly losses and regularization. Lecture 1 gives the basic idea: **define what counts as a bad prediction, then choose parameters that reduce the objective**.
+The zero-one classification error is useful for measuring performance, but it is difficult to optimize directly because the sign function creates a discontinuous objective.
+
+Later lectures introduce optimization-friendly losses and regularization. Lecture 1 provides the conceptual starting point: define what constitutes a bad prediction, then learn parameters that improve the objective.
 
 ---
 
 ## 9. Perceptron learning
 
-The perceptron is a simple algorithm for selecting the parameters of a linear classifier.
+The perceptron is a simple algorithm for learning the parameters of a linear classifier.
 
-Start with some parameter vector $\theta$. Visit the training examples one at a time.
+Start with a parameter vector $\theta$ and examine training examples one at a time.
 
 For a training example $(x_i,y_i)$:
 
-1. compute the prediction $f(x_i;\theta)$;
-2. if it is correct, leave $\theta$ unchanged;
-3. if it is wrong, update $\theta$.
+1. compute the prediction;
+2. if the prediction is correct, leave $\theta$ unchanged;
+3. if the prediction is wrong, update $\theta$.
 
-The update is
+The update on a misclassified example is
 
 $$
-\theta \leftarrow \theta + y_i x_i.
+\theta\leftarrow\theta+y_i x_i
 $$
 
-The update is made **only when the example is misclassified**.
+The update is performed **only when the example is misclassified**.
 
 ---
 
@@ -238,43 +236,43 @@ The update is made **only when the example is misclassified**.
 Define the agreement between the classifier and the true label as
 
 $$
- y_i\theta^Tx_i.
+z_i=y_i\theta^{T}x_i
 $$
 
-If the example is classified correctly, this quantity is positive. If it is misclassified, it is negative.
+If the example is correctly classified, then $z_i>0$. If it is misclassified, then $z_i<0$.
 
-Suppose $(x_i,y_i)$ is currently misclassified. After the update,
+Suppose $(x_i,y_i)$ is currently misclassified and we make the update
 
 $$
-\theta' = \theta + y_i x_i.
+\theta'=\theta+y_i x_i
 $$
 
 The new agreement is
 
 $$
 \begin{aligned}
-y_i(\theta')^Tx_i
-&=y_i(\theta+y_ix_i)^Tx_i\\
-&=y_i\theta^Tx_i+y_i^2x_i^Tx_i\\
-&=y_i\theta^Tx_i+\lVert x_i\rVert^2.
+y_i(\theta')^{T}x_i
+&=y_i(\theta+y_i x_i)^{T}x_i\\
+&=y_i\theta^{T}x_i+y_i^2x_i^{T}x_i\\
+&=y_i\theta^{T}x_i+\lVert x_i\rVert^2
 \end{aligned}
 $$
 
 Because
 
 $$
-\lVert x_i\rVert^2 \ge 0,
+\lVert x_i\rVert^2\geq 0
 $$
 
-and is positive for a nonzero example, the agreement for the current example increases after the update.
+and is positive whenever $x_i\ne 0$, the agreement for the current example increases after the update.
 
-This does **not** mean that every update improves every training example. An update can make other examples worse. The important fact is that the current mistake is pushed in the correct direction.
+This does **not** mean that every update improves every training example. Changing $\theta$ can make other examples better or worse. The important point is that the update pushes the current mistake toward the correct side of the boundary.
 
 ---
 
-## 11. Perceptron algorithm
+## 11. Perceptron learning loop
 
-The learning loop can be summarized as:
+The learning process can be summarized as:
 
 ```text
 initialize theta
@@ -294,21 +292,21 @@ is the prediction correct?
 keep theta   theta <- theta + y x
    \\          /
     v          v
-  continue through the data
+ continue through the data
           |
           v
       repeat epochs
 ```
 
-The notebook implements this algorithm directly with NumPy.
+The notebook implements this algorithm directly with NumPy. The core perceptron demonstration does not depend on scikit-learn.
 
-No scikit-learn perceptron is required for the core implementation. The goal is to make the update rule and its effect on the parameters explicit.
+The purpose is to make the parameter update, its effect on the score, and the resulting decision boundary visible.
 
 ---
 
-## 12. A small two-dimensional example
+## 12. Two-dimensional example
 
-Consider the training data
+The notebook uses the following small linearly separable dataset:
 
 $$
 X=
@@ -325,7 +323,7 @@ $$
 with labels
 
 $$
- y=
+y=
 \begin{bmatrix}
 +1\\
 +1\\
@@ -333,72 +331,79 @@ $$
 -1\\
 -1\\
 -1
-\end{bmatrix}.
+\end{bmatrix}
 $$
 
-These points can be separated by a line. The notebook uses them to show how the parameter vector changes after mistakes and how the decision boundary changes during training.
-
-For a two-feature classifier, the boundary has the form
+For two features, a linear decision boundary has the form
 
 $$
-\theta_1x_1+\theta_2x_2=0.
+\theta_1x_1+\theta_2x_2=0
 $$
+
+The notebook uses this dataset to show how mistakes cause parameter updates and how the learned boundary changes during training.
 
 ---
 
-## 13. Bias and the augmented-vector idea
+## 13. Bias and the augmented-vector formulation
 
-The first linear classifier in this lecture is constrained to have a boundary through the origin.
+The first classifier in this lecture has a decision boundary constrained to pass through the origin.
 
-A more flexible classifier includes a bias term:
-
-$$
- f(x)=\operatorname{sign}(\theta^Tx+\theta_0).
-$$
-
-Then the decision boundary becomes
+A more flexible linear classifier includes a bias term:
 
 $$
-\theta^Tx+\theta_0=0,
+f(x)=\mathrm{sign}\left(\theta^{T}x+\theta_0\right)
 $$
 
-which can move away from the origin.
+Its decision boundary is
 
-The bias can be incorporated into an augmented vector. Define
+$$
+\theta^{T}x+\theta_0=0
+$$
+
+The bias allows the boundary to move away from the origin.
+
+The bias can be incorporated into an augmented feature vector. Define
 
 $$
 \widetilde{x}=
 \begin{bmatrix}
-x\\1
-\end{bmatrix},
-\qquad
-\widetilde{\theta}=
-\begin{bmatrix}
-\theta\\\theta_0
-\end{bmatrix}.
+x\\
+1
+\end{bmatrix}
 $$
 
-Then
+and the augmented parameter vector
+
+$$
+\widetilde{\theta}=
+\begin{bmatrix}
+\theta\\
+\theta_0
+\end{bmatrix}
+$$
+
+Then the score becomes
 
 $$
 \widetilde{\theta}^{T}\widetilde{x}
-=
-\theta^Tx+\theta_0.
+=\theta^{T}x+\theta_0
 $$
 
-This formulation is useful because it lets the bias be handled as another coordinate.
+The bias has not disappeared. It is represented by the final coordinate of the augmented vectors.
 
-The expanded treatment of the bias and augmented representation appears in Lecture 2, where the perceptron implementation uses it explicitly.
+Lecture 2 develops this representation more fully and uses it in the perceptron implementation.
 
 ---
 
 ## 14. Perceptron convergence — preview of Lecture 2
 
-If the training data are linearly separable, the perceptron will eventually find a separating parameter vector under the standard assumptions.
+For linearly separable training data, the perceptron convergence theorem guarantees that the perceptron eventually finds a separating parameter vector under the standard assumptions.
 
-Lecture 1 introduces the algorithm and the intuition behind the update. Lecture 2 develops the convergence result and builds a fuller perceptron implementation around it.
+For non-linearly-separable data, there is no separating parameter vector for the perceptron to find.
 
-So the progression is:
+Lecture 1 introduces the algorithm and explains the update. Lecture 2 develops the convergence result and builds a fuller implementation around it.
+
+The progression is:
 
 ```text
 Lecture 1
@@ -420,7 +425,7 @@ perceptron convergence + implementation
 
 ## 15. From Lecture 1 to the later lectures
 
-The first four lectures form a deliberate sequence:
+The first four lectures form a deliberate progression:
 
 ```text
 Lecture 1
@@ -436,80 +441,105 @@ Lecture 4
 validation + cross-validation + hyperparameter selection
 ```
 
-The distinction between **parameters** and **hyperparameters** becomes important later:
+A key distinction becomes important later:
 
-- parameters such as $\theta$ are learned while fitting a model;
-- hyperparameters such as a regularization strength $\alpha$ are selected by a model-selection procedure.
+- **parameters**, such as $\theta$, are learned while fitting a model;
+- **hyperparameters**, such as a regularization strength $\alpha$, are selected by a model-selection procedure.
 
-This is why Lecture 1 begins with the hypothesis-class question rather than treating parameter fitting as the entire machine-learning problem.
+This is why Lecture 1 begins with the hypothesis-class question instead of treating parameter fitting as the entire machine-learning problem.
 
 ---
 
 ## 16. Implementation philosophy
 
-The repository follows a learning-first progression across the lectures:
+The repository follows the same learning-first progression throughout the lectures:
 
 1. Start with the mathematical definition.
-2. Implement the mechanism directly with Python/NumPy.
+2. Implement the mechanism directly with Python and NumPy.
 3. Inspect intermediate calculations and parameter updates.
 4. Visualize the geometry when possible.
-5. Use higher-level libraries only after understanding the underlying operation.
+5. Compare with higher-level libraries only after understanding the underlying operation.
 
-For Lecture 1, this means the notebook focuses on the classifier, score, decision boundary, training error, and perceptron update rather than hiding the ideas behind scikit-learn.
+For Lecture 1, the notebook therefore focuses on the classifier, score, decision boundary, training error, agreement, and perceptron update rather than hiding the mechanism behind a library implementation.
 
 ---
 
 ## 17. What to study
 
-You should be able to explain these relationships without looking them up:
+You should be able to explain these relationships without looking them up.
 
-### Classification
+### Binary classification
 
 $$
- f : \mathbb{R}^d\rightarrow\{-1,+1\}
+f:\mathbb{R}^d\rightarrow\{-1,+1\}
 $$
 
 ### Linear score
 
 $$
- s(x)=\theta^Tx
+s(x)=\theta^{T}x
 $$
 
 ### Prediction
 
 $$
- f(x;\theta)=\operatorname{sign}(\theta^Tx)
+f(x;\theta)=\mathrm{sign}\left(\theta^{T}x\right)
 $$
 
 ### Decision boundary
 
 $$
-\theta^Tx=0
+\theta^{T}x=0
 $$
 
 ### Training error
 
 $$
-\widehat{E}(\theta)
-=
-\frac{1}{n}
-\sum_{i=1}^{n}
-\mathbf{1}\left[f(x_i;\theta)\ne y_i\right]
+\widehat{E}(\theta)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}\left[f(x_i;\theta)\ne y_i\right]
 $$
 
 ### Agreement
 
 $$
- y_i\theta^Tx_i
+z_i=y_i\theta^{T}x_i
 $$
 
-### Perceptron update on a mistake
+### Perceptron update
 
 $$
-\theta\leftarrow\theta+y_ix_i
+\theta\leftarrow\theta+y_i x_i
 $$
 
-And you should understand **why** the update increases the agreement on the current misclassified example.
+### Bias form
+
+$$
+f(x)=\mathrm{sign}\left(\theta^{T}x+\theta_0\right)
+$$
+
+### Augmented representation
+
+$$
+\widetilde{x}=
+\begin{bmatrix}
+x\\
+1
+\end{bmatrix}
+,\qquad
+\widetilde{\theta}=
+\begin{bmatrix}
+\theta\\
+\theta_0
+\end{bmatrix}
+$$
+
+### Augmented score
+
+$$
+\widetilde{\theta}^{T}\widetilde{x}
+=\theta^{T}x+\theta_0
+$$
+
+Most importantly, you should be able to explain **why** the perceptron update increases the agreement on the current misclassified example.
 
 ---
 
@@ -517,7 +547,7 @@ And you should understand **why** the update increases the agreement on the curr
 
 Open `lecture_1_linear_classification.ipynb` in Jupyter or VS Code and run the cells from top to bottom.
 
-The notebook is self-contained and uses Python, NumPy, and Matplotlib for the core demonstrations. It generates the calculations and plots when executed.
+The notebook is self-contained and uses Python, NumPy, and Matplotlib for the core demonstrations. It generates the calculations, training results, and plots when executed.
 
 ### Suggested environment
 
@@ -532,10 +562,27 @@ Then open:
 unit_0/lecture_1/lecture_1_linear_classification.ipynb
 ```
 
-The notebook is the primary executable artifact; this README is the compact mathematical reference for studying the lecture.
+The notebook is the primary executable artifact; this README is the mathematical reference for studying the lecture.
+
+---
+
+## Equation-rendering safeguard
+
+The equations in this README intentionally follow the same conservative GitHub MathJax style used in Lecture 2 and the later lecture READMEs:
+
+- display equations use `$$` on separate lines;
+- inline mathematics uses `$...$`;
+- transposes use the explicit form `^{T}`;
+- the sign function uses `\mathrm{sign}(...)`;
+- multiline matrices use explicit `\\` row separators;
+- `cases` and `aligned` environments remain entirely inside a display block;
+- equations are never placed inside Markdown code blocks;
+- no single-backslash matrix row separators are used.
+
+When editing this file, preserve these conventions and verify the **rendered GitHub page**, not only the raw Markdown source.
 
 ---
 
 ## Source alignment
 
-The material follows the Lecture 1 progression of the course: supervised binary classification, generalization and model selection, linear classifiers through the origin, the geometry of the decision boundary, training error, and the perceptron update rule. The repository's examples are rewritten as executable learning demonstrations rather than copies of lecture text.
+The material follows the Lecture 1 progression of the course: supervised binary classification, generalization and hypothesis classes, linear classifiers through the origin, decision-boundary geometry, training error, loss, and the perceptron update rule. The repository examples are executable learning demonstrations rather than copies of lecture text.
