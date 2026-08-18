@@ -92,7 +92,7 @@ The sign of the score determines the predicted sentiment.
 For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
 $$
-\operatorname{error}(\theta;S)
+\mathrm{error}(\theta;S)
 =
 \frac{1}{|S|}
 \sum_{(x,y)\in S}
