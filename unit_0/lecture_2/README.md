@@ -376,8 +376,14 @@ $$
 z_i = y_i f(x_i)
 $$
 
+For prediction, use the same piecewise definition introduced in Section 1:
+
 $$
-\hat{y} = \operatorname{sign}(f(x))
+\hat{y} =
+\begin{cases}
++1 & \text{if } f(x) \geq 0,\\
+-1 & \text{if } f(x) < 0
+\end{cases}
 $$
 
 $$
