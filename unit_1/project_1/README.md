@@ -91,13 +91,8 @@ The sign of the score determines the predicted sentiment.
 
 For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
-$$
-\mathrm{error}(\theta;S)
-=
-\frac{1}{|S|}
-\sum_{(x,y)\in S}
-\mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]
-$$
+$`\mathrm{error}(\theta;S) = \frac{1}{|S|} \sum_{(x,y)\in S} \mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]`$
+
 
 ## 5. Perceptron
 
