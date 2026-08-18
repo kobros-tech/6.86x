@@ -218,19 +218,11 @@ $$
 f(x) = \tilde{\theta}^{T}\tilde{x}
 $$
 
-because
+because the augmented dot product is exactly the original score:
 
 $$
 \tilde{\theta}^{T}\tilde{x}
-=
-\begin{bmatrix}
-\theta^{T} & \theta_0
-\end{bmatrix}
-\begin{bmatrix}
-x\\
-1
-\end{bmatrix}
-=\theta^{T}x + \theta_0
+= \theta^{T}x + \theta_0
 $$
 
 The bias has not disappeared. It is now represented by the final coordinate of the augmented vectors.
