@@ -72,20 +72,56 @@ The update changes the classifier in a direction that improves the current examp
 
 ### 6. Augmented-vector formulation
 
-The bias can be represented as an additional coordinate:
+We can incorporate the bias into the feature vector by adding a constant feature equal to 1:
 
 $$
-\tilde{x}=\begin{bmatrix}x\\1\end{bmatrix},\qquad
+\tilde{x}=\begin{bmatrix}x\\1\end{bmatrix}
+$$
+
+and define the augmented parameter vector as:
+
+$$
 \tilde{\theta}=\begin{bmatrix}\theta\\\theta_0\end{bmatrix}
 $$
 
-so that:
+Then the classifier becomes:
 
 $$
 f(x)=\tilde{\theta}^T\tilde{x}
 $$
 
-This unifies the bias and ordinary feature weights into one vector.
+because:
+
+$$
+\tilde{\theta}^T\tilde{x}
+=
+\begin{bmatrix}\theta^T & \theta_0\end{bmatrix}
+\begin{bmatrix}x\\1\end{bmatrix}
+=\theta^T x+\theta_0
+$$
+
+For example, if:
+
+$$
+x=\begin{bmatrix}4\\4\end{bmatrix},\qquad
+\theta=\begin{bmatrix}1\\2\end{bmatrix},\qquad
+\theta_0=-5
+$$
+
+then:
+
+$$
+\tilde{x}=\begin{bmatrix}4\\4\\1\end{bmatrix},\qquad
+\tilde{\theta}=\begin{bmatrix}1\\2\\-5\end{bmatrix}
+$$
+
+and therefore:
+
+$$
+\tilde{\theta}^T\tilde{x}=1(4)+2(4)-5(1)=7
+$$
+
+The bias has not disappeared. It is now represented by the final coordinate of the augmented vectors.
 
 ## From Lecture 2 to Lecture 3
 
