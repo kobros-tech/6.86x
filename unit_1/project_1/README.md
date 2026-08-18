@@ -112,7 +112,7 @@ $$
 when
 
 $$
-y_i\theta^{T}x_i\leq 0.
+y_i\theta^{T}x_i\leq 0
 $$
 
 The quantity $y_i\theta^{T}x_i$ is useful because it combines the true label and the classifier score. A positive value means the prediction has the correct sign; a non-positive value means the example is misclassified or lies exactly on the decision boundary.
@@ -124,14 +124,14 @@ The average perceptron records the parameter vectors encountered during training
 If the sequence of learned vectors is
 
 $$
-\theta^{(1)},\theta^{(2)},\ldots,\theta^{(T)},
+\theta^{(1)},\theta^{(2)},\ldots,\theta^{(T)}
 $$
 
 the averaged parameter vector is conceptually
 
 $$
 \bar{\theta}
-=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}.
+=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}
 $$
 
 Averaging can make the classifier less sensitive to the exact parameter vector obtained at the end of the training trajectory.
@@ -144,7 +144,7 @@ For a training example $(x,y)$, the hinge loss is
 
 $$
 \ell(\theta;(x,y))
-=\max\{0,1-y\theta^{T}x\}.
+=\max\{0,1-y\theta^{T}x\}
 $$
 
 The regularized objective is
@@ -153,13 +153,13 @@ $$
 J(\theta)
 =\frac{\lambda}{2}\|\theta\|^2
 +\frac{1}{m}\sum_{i=1}^{m}
-\max\{0,1-y_i\theta^{T}x_i\}.
+\max\{0,1-y_i\theta^{T}x_i\}
 $$
 
 Pegasos performs stochastic sub-gradient updates and a projection step. With a single example and learning rate
 
 $$
-\eta_t=\frac{1}{\lambda t},
+\eta_t=\frac{1}{\lambda t}
 $$
 
 the update has the form
@@ -173,7 +173,7 @@ $$
 when the example violates the margin condition
 
 $$
-y_t\theta_t^{T}x_t<1.
+y_t\theta_t^{T}x_t<1
 $$
 
 If the example satisfies the margin, the loss contribution has zero sub-gradient and only the regularization shrinkage remains.
@@ -299,7 +299,7 @@ These are **hyperparameters**, not learned model parameters.
 For Pegasos, the regularization parameter is especially important because the learning rate is tied to it:
 
 $$
-\eta_t=\frac{1}{\lambda t}.
+\eta_t=\frac{1}{\lambda t}
 $$
 
 Changing $\lambda$ therefore changes both the regularization strength and the optimization schedule.
