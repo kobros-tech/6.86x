@@ -58,10 +58,10 @@ Later lectures build on this distinction when they introduce regularization, opt
 
 ## 3. Linear classifier through the origin
 
-For the first linear classifier, define the score
+For the first linear classifier, define the score:
 
 $$
-s(x)=\theta^T x
+s(x)=\theta^{T}x
 $$
 
 where the parameter vector is
@@ -79,7 +79,7 @@ $$
 The classifier predicts according to the sign of the score:
 
 $$
-f(x;\theta)=\operatorname{sign}(\theta^T x)
+f(x;\theta)=\mathrm{sign}\left(\theta^{T}x\right)
 $$
 
 Equivalently,
@@ -87,12 +87,12 @@ Equivalently,
 $$
 f(x;\theta)=
 \begin{cases}
-+1 & \text{if } \theta^T x\ge 0,\\
--1 & \text{if } \theta^T x<0
++1 & \text{if } \theta^{T}x\geq 0,\\
+-1 & \text{if } \theta^{T}x<0
 \end{cases}
 $$
 
-The score $\theta^T x$ is a real number. The prediction $f(x;\theta)$ is one of the two class labels, $-1$ or $+1$.
+The score $\theta^{T}x$ is a real number. The prediction $f(x;\theta)$ is one of the two class labels, $-1$ or $+1$.
 
 ---
 
@@ -101,7 +101,7 @@ The score $\theta^T x$ is a real number. The prediction $f(x;\theta)$ is one of 
 The prediction changes when the score crosses zero. Therefore the decision boundary is
 
 $$
-\theta^T x=0
+\theta^{T}x=0
 $$
 
 For two features,
@@ -116,9 +116,9 @@ In $d$ dimensions, the boundary is a $(d-1)$-dimensional hyperplane.
 
 The two sides of the boundary are determined by the score:
 
-- $\theta^T x>0$ gives class $+1$;
-- $\theta^T x<0$ gives class $-1$;
-- $\theta^T x=0$ lies on the decision boundary.
+- $\theta^{T}x>0$ gives class $+1$;
+- $\theta^{T}x<0$ gives class $-1$;
+- $\theta^{T}x=0$ lies on the decision boundary.
 
 ---
 
@@ -141,7 +141,7 @@ $$
 \end{bmatrix}
 $$
 
-The dot product also explains the direction of increasing score. Moving in the direction of $\theta$ increases $\theta^T x$ most rapidly.
+The dot product also explains the direction of increasing score. Moving in the direction of $\theta$ increases $\theta^{T}x$ most rapidly.
 
 The notebook visualizes both the decision boundary and the parameter vector so that the algebra and geometry can be connected directly.
 
@@ -168,10 +168,7 @@ After choosing a hypothesis class, we need to select a particular classifier fro
 For a classifier $f$ and training examples $(x_i,y_i)$, the zero-one training error is
 
 $$
-\widehat{E}(f)
-=\frac{1}{n}
-\sum_{i=1}^{n}
-\mathbf{1}\left[f(x_i)\ne y_i\right]
+\widehat{E}(f)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}\left[f(x_i)\ne y_i\right]
 $$
 
 where the indicator is defined by
@@ -203,9 +200,7 @@ that measures how undesirable a prediction is.
 The average loss over the training set is
 
 $$
-\frac{1}{n}
-\sum_{i=1}^{n}
-L\left(y_i,f(x_i)\right)
+\frac{1}{n}\sum_{i=1}^{n}L\left(y_i,f(x_i)\right)
 $$
 
 The zero-one classification error is useful for measuring performance, but it is difficult to optimize directly because the sign function creates a discontinuous objective.
@@ -241,7 +236,7 @@ The update is performed **only when the example is misclassified**.
 Define the agreement between the classifier and the true label as
 
 $$
-z_i=y_i\theta^T x_i
+z_i=y_i\theta^{T}x_i
 $$
 
 If the example is correctly classified, then $z_i>0$. If it is misclassified, then $z_i<0$.
@@ -256,17 +251,17 @@ The new agreement is
 
 $$
 \begin{aligned}
-y_i(\theta')^T x_i
-&=y_i(\theta+y_i x_i)^T x_i\\
-&=y_i\theta^T x_i+y_i^2x_i^T x_i\\
-&=y_i\theta^T x_i+\lVert x_i\rVert^2
+y_i(\theta')^{T}x_i
+&=y_i(\theta+y_i x_i)^{T}x_i\\
+&=y_i\theta^{T}x_i+y_i^2x_i^{T}x_i\\
+&=y_i\theta^{T}x_i+\lVert x_i\rVert^2
 \end{aligned}
 $$
 
 Because
 
 $$
-\lVert x_i\rVert^2\ge 0
+\lVert x_i\rVert^2\geq 0
 $$
 
 and is positive whenever $x_i\ne 0$, the agreement for the current example increases after the update.
@@ -356,13 +351,13 @@ The first classifier in this lecture has a decision boundary constrained to pass
 A more flexible linear classifier includes a bias term:
 
 $$
-f(x)=\operatorname{sign}(\theta^T x+\theta_0)
+f(x)=\mathrm{sign}\left(\theta^{T}x+\theta_0\right)
 $$
 
 Its decision boundary is
 
 $$
-\theta^T x+\theta_0=0
+\theta^{T}x+\theta_0=0
 $$
 
 The bias allows the boundary to move away from the origin.
@@ -390,8 +385,8 @@ $$
 Then the score becomes
 
 $$
-\widetilde{\theta}^T\widetilde{x}
-=\theta^T x+\theta_0
+\widetilde{\theta}^{T}\widetilde{x}
+=\theta^{T}x+\theta_0
 $$
 
 The bias has not disappeared. It is represented by the final coordinate of the augmented vectors.
@@ -482,34 +477,31 @@ $$
 ### Linear score
 
 $$
-s(x)=\theta^T x
+s(x)=\theta^{T}x
 $$
 
 ### Prediction
 
 $$
-f(x;\theta)=\operatorname{sign}(\theta^T x)
+f(x;\theta)=\mathrm{sign}\left(\theta^{T}x\right)
 $$
 
 ### Decision boundary
 
 $$
-\theta^T x=0
+\theta^{T}x=0
 $$
 
 ### Training error
 
 $$
-\widehat{E}(\theta)
-=\frac{1}{n}
-\sum_{i=1}^{n}
-\mathbf{1}\left[f(x_i;\theta)\ne y_i\right]
+\widehat{E}(\theta)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}\left[f(x_i;\theta)\ne y_i\right]
 $$
 
 ### Agreement
 
 $$
-z_i=y_i\theta^T x_i
+z_i=y_i\theta^{T}x_i
 $$
 
 ### Perceptron update
@@ -521,7 +513,7 @@ $$
 ### Bias form
 
 $$
-f(x)=\operatorname{sign}(\theta^T x+\theta_0)
+f(x)=\mathrm{sign}\left(\theta^{T}x+\theta_0\right)
 $$
 
 ### Augmented representation
@@ -543,8 +535,8 @@ $$
 ### Augmented score
 
 $$
-\widetilde{\theta}^T\widetilde{x}
-=\theta^T x+\theta_0
+\widetilde{\theta}^{T}\widetilde{x}
+=\theta^{T}x+\theta_0
 $$
 
 Most importantly, you should be able to explain **why** the perceptron update increases the agreement on the current misclassified example.
@@ -576,14 +568,16 @@ The notebook is the primary executable artifact; this README is the mathematical
 
 ## Equation-rendering safeguard
 
-The equations in this README intentionally follow the same conservative GitHub MathJax style used in the later lecture READMEs:
+The equations in this README intentionally follow the same conservative GitHub MathJax style used in Lecture 2 and the later lecture READMEs:
 
 - display equations use `$$` on separate lines;
 - inline mathematics uses `$...$`;
+- transposes use the explicit form `^{T}`;
+- the sign function uses `\mathrm{sign}(...)`;
 - multiline matrices use explicit `\\` row separators;
 - `cases` and `aligned` environments remain entirely inside a display block;
-- no malformed single-backslash matrix rows are used;
-- equations are kept separate from Markdown code blocks.
+- equations are never placed inside Markdown code blocks;
+- no single-backslash matrix row separators are used.
 
 When editing this file, preserve these conventions and verify the **rendered GitHub page**, not only the raw Markdown source.
 
