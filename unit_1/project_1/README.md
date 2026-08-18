@@ -58,13 +58,13 @@ A simple representation for a review is a bag of words. We build a dictionary of
 For a vocabulary
 
 $$
-V=\{w_1,w_2,\ldots,w_d\},
+V=\{w_1,w_2,\ldots,w_d\}
 $$
 
 a review becomes a vector
 
 $$
-x\in\mathbb{R}^d.
+x\in\mathbb{R}^d
 $$
 
 This project uses a sparse dictionary representation rather than constructing a dense matrix for every review. A feature is stored only when its value is nonzero.
@@ -76,25 +76,30 @@ The default feature extractor is a binary bag of words: a word contributes `1` w
 For a review feature vector $x$ and parameter vector $\theta$:
 
 $$
-f(x;\theta)=\theta^T x.
+f(x;\theta)=\theta^T x
 $$
 
 The prediction is
 
 $$
-\hat{y}=\operatorname{sign}(f(x;\theta)).
+\hat{y}=\operatorname{sign}\left(f(x;\theta)\right)
 $$
 
 The sign of the score determines the predicted sentiment.
 
-The classification error on a dataset $S$ is
+### Classification error
+
+For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
 $$
 \operatorname{error}(\theta;S)
 =
-\frac{1}{|S|}\sum_{(x,y)\in S}
-\mathbf{1}\left[\operatorname{sign}(\theta^T x)\neq y\right].
+\frac{1}{|S|}
+\sum_{(x,y)\in S}
+\mathbf{1}\left[\operatorname{sign}(\theta^T x)\neq y\right]
 $$
+
+This is the fraction of examples in $S$ that the classifier labels incorrectly.
 
 ## 5. Perceptron
 
@@ -109,7 +114,7 @@ $$
 when
 
 $$
-y_i\theta^T x_i\leq 0.
+y_i\theta^T x_i\leq 0
 $$
 
 The quantity $y_i\theta^T x_i$ is useful because it combines the true label and the classifier score. A positive value means the prediction has the correct sign; a non-positive value means the example is misclassified or lies exactly on the decision boundary.
@@ -121,14 +126,14 @@ The average perceptron records the parameter vectors encountered during training
 If the sequence of learned vectors is
 
 $$
-\theta^{(1)},\theta^{(2)},\ldots,\theta^{(T)},
+\theta^{(1)},\theta^{(2)},\ldots,\theta^{(T)}
 $$
 
 the averaged parameter vector is conceptually
 
 $$
 \bar{\theta}
-=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}.
+=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}
 $$
 
 Averaging can make the classifier less sensitive to the exact parameter vector obtained at the end of the training trajectory.
@@ -141,7 +146,7 @@ For a training example $(x,y)$, the hinge loss is
 
 $$
 \ell(\theta;(x,y))
-=\max\{0,1-y\theta^T x\}.
+=\max\{0,1-y\theta^T x\}
 $$
 
 The regularized objective is
@@ -150,13 +155,13 @@ $$
 J(\theta)
 =\frac{\lambda}{2}\|\theta\|^2
 +\frac{1}{m}\sum_{i=1}^{m}
-\max\{0,1-y_i\theta^T x_i\}.
+\max\{0,1-y_i\theta^T x_i\}
 $$
 
 Pegasos performs stochastic sub-gradient updates and a projection step. With a single example and learning rate
 
 $$
-\eta_t=\frac{1}{\lambda t},
+\eta_t=\frac{1}{\lambda t}
 $$
 
 the update has the form
@@ -170,7 +175,7 @@ $$
 when the example violates the margin condition
 
 $$
-y_t\theta_t^T x_t<1.
+y_t\theta_t^T x_t<1
 $$
 
 If the example satisfies the margin, the loss contribution has zero sub-gradient and only the regularization shrinkage remains.
@@ -296,7 +301,7 @@ These are **hyperparameters**, not learned model parameters.
 For Pegasos, the regularization parameter is especially important because the learning rate is tied to it:
 
 $$
-\eta_t=\frac{1}{\lambda t}.
+\eta_t=\frac{1}{\lambda t}
 $$
 
 Changing $\lambda$ therefore changes both the regularization strength and the optimization schedule.
@@ -348,3 +353,16 @@ The project should be studied as an application of the mathematical ideas in the
 ## 16. Attribution
 
 The project is an original study-oriented implementation inspired by the MIT 6.86x course material and the Pegasos research paper. It is not a copy of the course's proprietary starter code or solution code.
+
+## Equation-rendering safeguard
+
+The equations in this README follow the same conservative GitHub MathJax style used by the lecture READMEs:
+
+- use `$$` on separate lines for display equations;
+- use `$...$` for inline mathematics;
+- use descriptive Markdown headings instead of placing equations in headings;
+- keep each display equation entirely inside its `$$` delimiters;
+- use explicit `\\` row separators in matrices and multiline environments;
+- keep `cases` and `aligned` environments completely inside display blocks;
+- never place equations inside Markdown code blocks;
+- verify the **rendered GitHub page**, not only the raw Markdown source.
