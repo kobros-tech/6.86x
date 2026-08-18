@@ -89,10 +89,10 @@ def vectorize(
 
 
 def dot(weights: Mapping[int, float], features: Mapping[int, float]) -> float:
-    """Sparse dot product."""
-    if len(weights) > len(features):
-        weights, features = features, weights
-    return sum(weights.get(index, 0.0) * value for index, value in features.items())
+    """Return the dot product of two sparse vectors."""
+    if len(weights) <= len(features):
+        return sum(value * features.get(index, 0.0) for index, value in weights.items())
+    return sum(value * weights.get(index, 0.0) for index, value in features.items())
 
 
 def predict(weights: Mapping[int, float], features: Mapping[int, float]) -> int:
@@ -139,7 +139,7 @@ def average_perceptron(
     data: Sequence[tuple[int, Mapping[int, float]]],
     epochs: int = 5,
 ) -> dict[int, float]:
-    """Train an averaged perceptron using an online running average."""
+    """Train an averaged perceptron with lazy timestamp accumulation."""
     if epochs < 1:
         raise ValueError("epochs must be at least 1")
 
@@ -151,11 +151,15 @@ def average_perceptron(
     for _ in range(epochs):
         for label, features in data:
             step += 1
-            if label * dot(weights, features) <= 0:
-                _add_scaled(weights, features, label)
+
+            # Account for the old value over the time since this feature was
+            # last touched, then apply the current perceptron update.
             for index in features:
                 totals[index] += (step - timestamps[index]) * weights.get(index, 0.0)
                 timestamps[index] = step
+
+            if label * dot(weights, features) <= 0:
+                _add_scaled(weights, features, label)
 
     averaged: dict[int, float] = {}
     for index in set(totals) | set(weights):
@@ -209,6 +213,14 @@ def pegasos(
             step += 1
             eta = 1.0 / (lambda_ * step)
 
+            # Determine active examples using the current w_t, before the
+            # regularization shrinkage is applied.
+            active = [
+                data[index]
+                for index in batch_indices
+                if data[index][0] * dot(weights, data[index][1]) < 1.0
+            ]
+
             # Regularization shrinkage.
             shrink = 1.0 - eta * lambda_
             for index in list(weights):
@@ -217,12 +229,6 @@ def pegasos(
                     del weights[index]
 
             # Estimated hinge-loss sub-gradient contribution.
-            active = [
-                data[index]
-                for index in batch_indices
-                if label * dot(weights, features) < 1.0
-                for label, features in [data[index]]
-            ]
             if active:
                 scale = eta / len(active)
                 for label, features in active:
