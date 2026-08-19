@@ -2,7 +2,7 @@
 
 This project applies the linear-classification ideas from Unit 1 to sentiment analysis of product reviews.
 
-The implementation is intentionally **Python-first** rather than notebook-first. A project is easier to test, reuse, and extend when the learning algorithms and feature extraction live in ordinary Python modules. A notebook can be added later as a presentation layer, but it should not be the source of truth for the implementation.
+The project uses Python files for the reusable implementation and a Jupyter notebook for experimentation and visualization.
 
 ## 1. Project goal
 
@@ -33,23 +33,24 @@ $$
 
 For a classifier with a bias term, we can augment the feature vector with a constant one, so the same expression can represent an affine decision boundary.
 
-## 2. Why Python files instead of a notebook?
+## 2. Project structure
 
-The lectures use Jupyter notebooks because notebooks are excellent for demonstrating one concept at a time. This project is different: it contains reusable algorithms, feature extraction, data parsing, and tests.
-
-Therefore the primary artifacts are Python files:
+The project uses Python files for the reusable implementation and a Jupyter notebook for experimentation and visualization.
 
 ```text
 project_1/
 ├── README.md
 ├── review_analyzer.py
 ├── demo.py
-└── test_review_analyzer.py
+├── test_review_analyzer.py
+└── automatic_review_analyzer.ipynb
 ```
 
-This structure keeps the mathematical implementation inspectable while allowing the code to be executed from the command line and tested automatically.
+The Python module contains the reusable learning algorithms, feature extraction, data parsing, and evaluation functions.
 
-If a visual walkthrough is useful later, a notebook can import these functions without duplicating the implementation.
+The notebook is the experimental and visualization layer. It demonstrates the three classifiers, explores the toy review dataset, plots training behavior, examines Pegasos regularization, visualizes learned word weights, and runs the automated tests.
+
+The notebook imports the implementation from `review_analyzer.py` rather than duplicating the learning algorithms.
 
 ## 3. Text representation: bag of words
 
@@ -91,8 +92,15 @@ The sign of the score determines the predicted sentiment.
 
 For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
-$`\mathrm{error}(\theta;S) = \frac{1}{|S|} \sum_{(x,y)\in S} \mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]`$
-
+$$
+\operatorname{error}(\theta;S)
+=
+\frac{1}{|S|}
+\sum_{(x,y)\in S}
+\mathbf{1}\left[
+\mathrm{sign}\left(\theta^{T}x\right)\neq y
+\right]
+$$
 
 ## 5. Perceptron
 
@@ -231,7 +239,17 @@ The demo creates a small synthetic review dataset, builds a vocabulary, trains t
 
 For a real review dataset, use the functions in `review_analyzer.py` to load the data, build the vocabulary from the training split, transform both training and validation reviews, train a classifier, and evaluate it.
 
-## 11. Running the tests
+## 11. Running the research notebook
+
+From the project directory:
+
+```bash
+jupyter notebook automatic_review_analyzer.ipynb
+```
+
+The notebook provides an interactive experimental view of the project, including classifier comparisons, training curves, Pegasos regularization experiments, learned feature weights, and automated tests.
+
+## 12. Running the tests
 
 ```bash
 python3 -m unittest -v test_review_analyzer.py
@@ -248,7 +266,7 @@ The tests cover:
 - Pegasos learning;
 - a small end-to-end sentiment-classification example.
 
-## 12. Correct experimental workflow
+## 13. Correct experimental workflow
 
 For a real experiment, keep the test set untouched while making model choices:
 
@@ -280,7 +298,7 @@ final test evaluation
 
 In particular, the vocabulary should be learned from the training data rather than from the complete dataset. Otherwise information from validation or test examples can leak into the representation.
 
-## 13. Important Pegasos hyperparameters
+## 14. Important Pegasos hyperparameters
 
 The implementation exposes:
 
@@ -299,7 +317,7 @@ $$
 
 Changing $\lambda$ therefore changes both the regularization strength and the optimization schedule.
 
-## 14. Study questions
+## 15. Study questions
 
 1. Why is $y\theta^{T}x$ more useful for the perceptron update than looking at $\theta^{T}x$ alone?
 2. What does the hinge-loss margin condition $y\theta^{T}x<1$ mean?
@@ -310,7 +328,7 @@ Changing $\lambda$ therefore changes both the regularization strength and the op
 7. How does the Pegasos update connect Lecture 3's hinge loss to stochastic optimization in Lecture 4?
 8. Why is Pegasos particularly appropriate for sparse text features?
 
-## 15. Relation to Unit 1
+## 16. Relation to Unit 1
 
 This project is the practical synthesis of the unit:
 
@@ -339,11 +357,12 @@ Automatic Review Analyzer
        +--> average perceptron
        +--> Pegasos / regularized SVM
        +--> validation and final evaluation
+       +--> research experiments + visualizations
 ```
 
 The project should be studied as an application of the mathematical ideas in the lectures, not as an unrelated NLP exercise.
 
-## 16. Attribution
+## 17. Attribution
 
 The project is an original study-oriented implementation inspired by the MIT 6.86x course material and the Pegasos research paper. It is not a copy of the course's proprietary starter code or solution code.
 
