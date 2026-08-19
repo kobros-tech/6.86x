@@ -93,7 +93,7 @@ The sign of the score determines the predicted sentiment.
 For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
 $$
-\operatorname{error}(\theta;S)=\frac{1}{|S|}\sum_{(x,y)\in S}\mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]
+\mathrm{error}(\theta;S)=\frac{1}{|S|}\sum_{(x,y)\in S}\mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]
 $$
 
 ## 5. Perceptron
@@ -361,6 +361,7 @@ The equations in this README intentionally follow the same conservative GitHub M
 - inline mathematics uses `$...$`;
 - transposes use the explicit form `^{T}`;
 - the sign function uses `\mathrm{sign}(...)`;
+- the error function uses `\mathrm{error}(...)` rather than the unsupported `\operatorname{error}(...)`;
 - multiline matrices use explicit `\\` row separators;
 - `cases` and `aligned` environments remain entirely inside a display block;
 - equations are never placed inside Markdown code blocks;
