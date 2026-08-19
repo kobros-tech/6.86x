@@ -2,9 +2,9 @@
 
 Unit 1 introduces linear classification and develops the ideas needed to understand how classifiers are trained, regularized, and evaluated for generalization.
 
-The unit progresses from the basic machine-learning problem to linear decision boundaries, the perceptron, hinge loss, margins, regularization, and cross-validation.
+The unit progresses from the basic machine-learning problem to linear decision boundaries, the perceptron, hinge loss, margins, regularization, and cross-validation. Project 1 then brings these ideas together in a text-classification application.
 
-## Lectures and recitation
+## Lectures, recitation, and project
 
 ### Lecture 1. Introduction to Machine Learning
 
@@ -36,6 +36,18 @@ Provides a practical demonstration of tuning the regularization hyperparameter u
 
 **Study artifact:** the Recitation 1 notebook and supporting documentation.
 
+### Project 1. Automatic Review Analyzer
+
+Applies Unit 1 to sentiment classification of product reviews. The project builds a sparse bag-of-words representation and implements three linear learning algorithms directly in Python:
+
+- Perceptron;
+- Average Perceptron;
+- Pegasos, a stochastic sub-gradient method for a regularized linear SVM objective.
+
+The project also demonstrates the separation between training, validation, and final evaluation, and connects the implementation to the Pegasos research paper by Shalev-Shwartz, Singer, Srebro, and Cotter.
+
+**Study artifact:** `project_1/README.md` and the executable Python implementation and tests.
+
 ## Unit progression
 
 ```text
@@ -53,15 +65,24 @@ Linear Classification and Generalization
         ↓
 Recitation 1
 Tuning the Regularization Hyperparameter by Cross Validation
+        ↓
+Project 1
+Automatic Review Analyzer
+        |
+        +--> Bag-of-words representation
+        +--> Perceptron
+        +--> Average Perceptron
+        +--> Pegasos / regularized SVM
+        +--> Validation and final evaluation
 ```
 
-The progression is intentional: first understand the classification problem and linear hypothesis class, then learn a classifier with the perceptron, introduce an optimization-friendly loss and regularization, and finally study how to select hyperparameters and evaluate generalization.
+The progression is intentional: first understand the classification problem and linear hypothesis class, then learn a classifier with the perceptron, introduce an optimization-friendly loss and regularization, study generalization and hyperparameter selection, and finally apply the complete workflow to a text-classification problem.
 
 ## Documentation convention
 
 Each lecture README is a study guide rather than a copy of the lecture notes. It should explain the mathematics, definitions, intuition, and relationship between the equations and the executable examples.
 
-The notebooks are the executable learning artifacts. They should expose the calculations and implementations clearly, preferably using Python and NumPy directly before relying on higher-level machine-learning libraries.
+The notebooks are the executable learning artifacts for lecture and recitation demonstrations. Project 1 uses ordinary Python modules because the project contains reusable algorithms, data processing, and automated tests; a notebook can be added later as a presentation layer without duplicating the implementation.
 
 ### Equation-rendering safeguard
 
