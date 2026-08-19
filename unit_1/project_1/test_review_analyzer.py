@@ -58,8 +58,10 @@ class ReviewAnalyzerTests(unittest.TestCase):
         self.assertGreaterEqual(accuracy(weights, self.data), 0.75)
 
     def test_end_to_end(self) -> None:
+        # Build the vocabulary from training data only, then evaluate a
+        # validation review containing words known from that training set.
         train = self.reviews[:3]
-        validation = [Review(-1, "terrible product")]
+        validation = [Review(-1, "bad product")]
         vocabulary = build_vocabulary(train)
         train_data = vectorize(train, vocabulary)
         validation_data = vectorize(validation, vocabulary)
