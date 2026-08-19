@@ -93,13 +93,7 @@ The sign of the score determines the predicted sentiment.
 For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
 $$
-\operatorname{error}(\theta;S)
-=
-\frac{1}{|S|}
-\sum_{(x,y)\in S}
-\mathbf{1}\left[
-\mathrm{sign}\left(\theta^{T}x\right)\neq y
-\right]
+\operatorname{error}(\theta;S)=\frac{1}{|S|}\sum_{(x,y)\in S}\mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]
 $$
 
 ## 5. Perceptron
@@ -133,8 +127,7 @@ $$
 the averaged parameter vector is conceptually
 
 $$
-\bar{\theta}
-=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}
+\bar{\theta}=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}
 $$
 
 Averaging can make the classifier less sensitive to the exact parameter vector obtained at the end of the training trajectory.
@@ -146,17 +139,13 @@ The project also implements the Pegasos algorithm for a regularized linear SVM o
 For a training example $(x,y)$, the hinge loss is
 
 $$
-\ell(\theta;(x,y))
-=\max\{0,1-y\theta^{T}x\}
+\ell(\theta;(x,y))=\max\{0,1-y\theta^{T}x\}
 $$
 
 The regularized objective is
 
 $$
-J(\theta)
-=\frac{\lambda}{2}\|\theta\|^2
-+\frac{1}{m}\sum_{i=1}^{m}
-\max\{0,1-y_i\theta^{T}x_i\}
+J(\theta)=\frac{\lambda}{2}\|\theta\|^2+\frac{1}{m}\sum_{i=1}^{m}\max\{0,1-y_i\theta^{T}x_i\}
 $$
 
 Pegasos performs stochastic sub-gradient updates and a projection step. With a single example and learning rate
@@ -168,9 +157,7 @@ $$
 the update has the form
 
 $$
-\theta_{t+1/2}
-=(1-\eta_t\lambda)\theta_t
-+\eta_t y_t x_t
+\theta_{t+1/2}=(1-\eta_t\lambda)\theta_t+\eta_t y_t x_t
 $$
 
 when the example violates the margin condition
