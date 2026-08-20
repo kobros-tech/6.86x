@@ -2,7 +2,7 @@
 
 This project applies the linear-classification ideas from Unit 1 to sentiment analysis of product reviews.
 
-The implementation is intentionally **Python-first** rather than notebook-first. A project is easier to test, reuse, and extend when the learning algorithms and feature extraction live in ordinary Python modules. A notebook can be added later as a presentation layer, but it should not be the source of truth for the implementation.
+The project uses Python files for the reusable implementation and Jupyter notebooks for experimentation and visualization.
 
 ## 1. Project goal
 
@@ -33,23 +33,27 @@ $$
 
 For a classifier with a bias term, we can augment the feature vector with a constant one, so the same expression can represent an affine decision boundary.
 
-## 2. Why Python files instead of a notebook?
+## 2. Project structure
 
-The lectures use Jupyter notebooks because notebooks are excellent for demonstrating one concept at a time. This project is different: it contains reusable algorithms, feature extraction, data parsing, and tests.
-
-Therefore the primary artifacts are Python files:
+The project uses Python files for the reusable implementation and Jupyter notebooks for experimentation and visualization.
 
 ```text
 project_1/
 ├── README.md
 ├── review_analyzer.py
 ├── demo.py
-└── test_review_analyzer.py
+├── test_review_analyzer.py
+├── automatic_review_analyzer.ipynb
+└── word_weight_comparison.ipynb
 ```
 
-This structure keeps the mathematical implementation inspectable while allowing the code to be executed from the command line and tested automatically.
+The Python module contains the reusable learning algorithms, feature extraction, data parsing, and evaluation functions.
 
-If a visual walkthrough is useful later, a notebook can import these functions without duplicating the implementation.
+`automatic_review_analyzer.ipynb` is the main experimental notebook. It demonstrates the three classifiers, explores the toy review dataset, plots training behavior, examines Pegasos regularization, visualizes learned feature weights, and runs the automated tests.
+
+`word_weight_comparison.ipynb` is a focused follow-up experiment comparing the word weights learned by Perceptron, Average Perceptron, and Pegasos on the same vocabulary. It makes explicit that word weights are not unique to Pegasos: all three are linear classifiers and therefore learn a weight for each vocabulary feature.
+
+The notebooks import the implementation from `review_analyzer.py` rather than duplicating the learning algorithms.
 
 ## 3. Text representation: bag of words
 
@@ -91,8 +95,9 @@ The sign of the score determines the predicted sentiment.
 
 For a dataset $S$, the classification error of a parameter vector $\theta$ is
 
-$`\mathrm{error}(\theta;S) = \frac{1}{|S|} \sum_{(x,y)\in S} \mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]`$
-
+$$
+\mathrm{error}(\theta;S)=\frac{1}{|S|}\sum_{(x,y)\in S}\mathbf{1}\left[\mathrm{sign}\left(\theta^{T}x\right)\neq y\right]
+$$
 
 ## 5. Perceptron
 
@@ -125,8 +130,7 @@ $$
 the averaged parameter vector is conceptually
 
 $$
-\bar{\theta}
-=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}
+\bar{\theta}=\frac{1}{T}\sum_{t=1}^{T}\theta^{(t)}
 $$
 
 Averaging can make the classifier less sensitive to the exact parameter vector obtained at the end of the training trajectory.
@@ -138,17 +142,13 @@ The project also implements the Pegasos algorithm for a regularized linear SVM o
 For a training example $(x,y)$, the hinge loss is
 
 $$
-\ell(\theta;(x,y))
-=\max\{0,1-y\theta^{T}x\}
+\ell(\theta;(x,y))=\max\{0,1-y\theta^{T}x\}
 $$
 
 The regularized objective is
 
 $$
-J(\theta)
-=\frac{\lambda}{2}\|\theta\|^2
-+\frac{1}{m}\sum_{i=1}^{m}
-\max\{0,1-y_i\theta^{T}x_i\}
+J(\theta)=\frac{\lambda}{2}\|\theta\|^2+\frac{1}{m}\sum_{i=1}^{m}\max\{0,1-y_i\theta^{T}x_i\}
 $$
 
 Pegasos performs stochastic sub-gradient updates and a projection step. With a single example and learning rate
@@ -160,9 +160,7 @@ $$
 the update has the form
 
 $$
-\theta_{t+1/2}
-=(1-\eta_t\lambda)\theta_t
-+\eta_t y_t x_t
+\theta_{t+1/2}=(1-\eta_t\lambda)\theta_t+\eta_t y_t x_t
 $$
 
 when the example violates the margin condition
@@ -195,7 +193,25 @@ The two algorithms illustrate an important progression in Unit 1.
 
 The project therefore moves from a mistake-driven learning rule to an optimization-based regularized classifier.
 
-## 9. Data format
+## 9. Learned word weights
+
+Because the review representation is a bag of words, each word corresponds to one component of the learned parameter vector. If the vocabulary is $V=\{w_1,\ldots,w_d\}$, then the classifier learns weights $\theta_1,\ldots,\theta_d$ associated with those words.
+
+For a review vector $x$, the linear score is
+
+$$
+f(x;\theta)=\theta^{T}x
+$$
+
+so a word's weight contributes to the score when that word is present in the review. A positive weight pushes the score toward the positive class, while a negative weight pushes it toward the negative class. The magnitude indicates the strength of that feature's contribution within the learned model.
+
+These weights are **not specific to Pegasos**. Perceptron, Average Perceptron, and Pegasos all learn a linear weight vector over the same vocabulary. Their training rules and objectives differ, so the numerical weights can differ even though they represent the same kind of model.
+
+The focused `word_weight_comparison.ipynb` notebook visualizes the three learned weight vectors on the same toy dataset. This makes it possible to ask whether the algorithms agree about which words are associated with positive or negative sentiment and how regularization changes the magnitude of Pegasos weights.
+
+This is an interpretability experiment on a deliberately small dataset, not evidence that individual words universally determine sentiment.
+
+## 10. Data format
 
 The implementation accepts simple text files in which each non-empty line contains a label followed by the review text.
 
@@ -219,7 +235,7 @@ Labels must be `+1` or `-1`.
 
 The project does not commit the course's review dataset to the repository. This keeps the repository lightweight and avoids redistributing course-provided data. The code is designed so a compatible local dataset can be supplied explicitly.
 
-## 10. Running the demo
+## 11. Running the demo
 
 From the project directory:
 
@@ -231,7 +247,23 @@ The demo creates a small synthetic review dataset, builds a vocabulary, trains t
 
 For a real review dataset, use the functions in `review_analyzer.py` to load the data, build the vocabulary from the training split, transform both training and validation reviews, train a classifier, and evaluate it.
 
-## 11. Running the tests
+## 12. Running the research notebooks
+
+From the project directory:
+
+```bash
+jupyter notebook automatic_review_analyzer.ipynb
+```
+
+For the focused word-weight experiment:
+
+```bash
+jupyter notebook word_weight_comparison.ipynb
+```
+
+The notebooks provide an interactive experimental view of the project, including classifier comparisons, training curves, Pegasos regularization experiments, learned feature weights, comparison of word weights across classifiers, and automated tests.
+
+## 13. Running the tests
 
 ```bash
 python3 -m unittest -v test_review_analyzer.py
@@ -248,7 +280,7 @@ The tests cover:
 - Pegasos learning;
 - a small end-to-end sentiment-classification example.
 
-## 12. Correct experimental workflow
+## 14. Correct experimental workflow
 
 For a real experiment, keep the test set untouched while making model choices:
 
@@ -280,7 +312,7 @@ final test evaluation
 
 In particular, the vocabulary should be learned from the training data rather than from the complete dataset. Otherwise information from validation or test examples can leak into the representation.
 
-## 13. Important Pegasos hyperparameters
+## 15. Important Pegasos hyperparameters
 
 The implementation exposes:
 
@@ -299,7 +331,7 @@ $$
 
 Changing $\lambda$ therefore changes both the regularization strength and the optimization schedule.
 
-## 14. Study questions
+## 16. Study questions
 
 1. Why is $y\theta^{T}x$ more useful for the perceptron update than looking at $\theta^{T}x$ alone?
 2. What does the hinge-loss margin condition $y\theta^{T}x<1$ mean?
@@ -309,8 +341,10 @@ Changing $\lambda$ therefore changes both the regularization strength and the op
 6. Why can averaging perceptron parameters improve stability?
 7. How does the Pegasos update connect Lecture 3's hinge loss to stochastic optimization in Lecture 4?
 8. Why is Pegasos particularly appropriate for sparse text features?
+9. Why do Perceptron, Average Perceptron, and Pegasos all produce word weights?
+10. How can comparing the signs and magnitudes of the three sets of word weights help us interpret the classifiers?
 
-## 15. Relation to Unit 1
+## 17. Relation to Unit 1
 
 This project is the practical synthesis of the unit:
 
@@ -339,11 +373,13 @@ Automatic Review Analyzer
        +--> average perceptron
        +--> Pegasos / regularized SVM
        +--> validation and final evaluation
+       +--> research experiments + visualizations
+       +--> word-weight interpretability
 ```
 
 The project should be studied as an application of the mathematical ideas in the lectures, not as an unrelated NLP exercise.
 
-## 16. Attribution
+## 18. Attribution
 
 The project is an original study-oriented implementation inspired by the MIT 6.86x course material and the Pegasos research paper. It is not a copy of the course's proprietary starter code or solution code.
 
@@ -355,6 +391,7 @@ The equations in this README intentionally follow the same conservative GitHub M
 - inline mathematics uses `$...$`;
 - transposes use the explicit form `^{T}`;
 - the sign function uses `\mathrm{sign}(...)`;
+- the error function uses `\mathrm{error}(...)` rather than the unsupported `\operatorname{error}(...)`;
 - multiline matrices use explicit `\\` row separators;
 - `cases` and `aligned` environments remain entirely inside a display block;
 - equations are never placed inside Markdown code blocks;

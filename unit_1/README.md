@@ -46,7 +46,7 @@ Applies Unit 1 to sentiment classification of product reviews. The project build
 
 The project also demonstrates the separation between training, validation, and final evaluation, and connects the implementation to the Pegasos research paper by Shalev-Shwartz, Singer, Srebro, and Cotter.
 
-**Study artifact:** `project_1/README.md` and the executable Python implementation and tests.
+**Study artifacts:** `project_1/README.md`, the executable Python implementation and tests, and `project_1/automatic_review_analyzer.ipynb` for experiments and visualizations.
 
 ## Unit progression
 
@@ -74,6 +74,7 @@ Automatic Review Analyzer
         +--> Average Perceptron
         +--> Pegasos / regularized SVM
         +--> Validation and final evaluation
+        +--> Research experiments and visualizations
 ```
 
 The progression is intentional: first understand the classification problem and linear hypothesis class, then learn a classifier with the perceptron, introduce an optimization-friendly loss and regularization, study generalization and hyperparameter selection, and finally apply the complete workflow to a text-classification problem.
@@ -82,7 +83,7 @@ The progression is intentional: first understand the classification problem and 
 
 Each lecture README is a study guide rather than a copy of the lecture notes. It should explain the mathematics, definitions, intuition, and relationship between the equations and the executable examples.
 
-The notebooks are the executable learning artifacts for lecture and recitation demonstrations. Project 1 uses ordinary Python modules because the project contains reusable algorithms, data processing, and automated tests; a notebook can be added later as a presentation layer without duplicating the implementation.
+The notebooks are the executable learning artifacts for lecture and recitation demonstrations. Project 1 uses ordinary Python modules for reusable algorithms, data processing, and automated tests, and provides `automatic_review_analyzer.ipynb` as a presentation and experimentation layer for running comparisons and generating visualizations.
 
 ### Equation-rendering safeguard
 
