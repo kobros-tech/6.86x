@@ -95,6 +95,8 @@ $$
 
 The project uses a binary bag-of-words representation: a vocabulary word contributes `1` when it occurs in a review. The feature representation is sparse, so only nonzero features are stored.
 
+The resulting feature space is **high-dimensional**: each vocabulary word corresponds to one dimension. In the current 3,000-review experiment, the training vocabulary contains approximately 1,766 words, so each review is represented as a sparse vector in approximately $\mathbb{R}^{1766}$. The classifiers operate on this full feature space during training and evaluation; there is no 2-D projection involved in the actual classification experiment.
+
 The vocabulary is built from training reviews only. Validation and test reviews are transformed using that existing vocabulary. This avoids leaking information from validation or test data into the representation.
 
 ## 4. General-purpose linear classifiers
