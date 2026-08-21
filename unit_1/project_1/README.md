@@ -145,33 +145,49 @@ $$
 \ell(\theta;(x,y))=\max\{0,1-y\theta^{T}x\}
 $$
 
-The regularized objective is
+For a dataset of $m$ examples, the regularized objective is
 
 $$
 J(\theta)=\frac{\lambda}{2}\|\theta\|^2+\frac{1}{m}\sum_{i=1}^{m}\max\{0,1-y_i\theta^{T}x_i\}
 $$
 
-Pegasos performs stochastic sub-gradient updates and a projection step. With a single example and learning rate
+Pegasos uses a decreasing learning rate
 
 $$
 \eta_t=\frac{1}{\lambda t}
 $$
 
-the update has the form
+and a stochastic or mini-batch sub-gradient update followed by projection.
+
+For a mini-batch $B_t$ of size $r$, let
+
+$$
+A_t=\left\{i\in B_t:y_i\theta_t^{T}x_i<1\right\}
+$$
+
+be the active examples whose hinge loss has a nonzero sub-gradient. The update before projection is
+
+$$
+\theta_{t+1/2}=(1-\eta_t\lambda)\theta_t+\frac{\eta_t}{r}\sum_{i\in A_t}y_i x_i
+$$
+
+The denominator is the **full batch size $r$**, not the number of active examples. Inactive examples contribute zero to the sum, but they remain part of the batch average.
+
+When `batch_size=1`, this reduces to the familiar single-example Pegasos update:
 
 $$
 \theta_{t+1/2}=(1-\eta_t\lambda)\theta_t+\eta_t y_t x_t
 $$
 
-when the example violates the margin condition
+when the example violates the margin. If it satisfies the margin, the hinge-loss contribution is zero and only the regularization shrinkage remains.
+
+The implementation then projects the parameter vector onto the ball required by the Pegasos algorithm:
 
 $$
-y_t\theta_t^{T}x_t<1
+\|\theta\|\leq\frac{1}{\sqrt{\lambda}}
 $$
 
-If the example satisfies the margin, the loss contribution has zero sub-gradient and only the regularization shrinkage remains.
-
-The implementation then projects the parameter vector onto the ball required by the Pegasos algorithm.
+This projection is separate from the per-step regularization shrinkage: shrinkage is part of every update, while projection enforces the norm constraint after the update.
 
 ### Why this paper matters here
 
@@ -261,140 +277,14 @@ For the focused word-weight experiment:
 jupyter notebook word_weight_comparison.ipynb
 ```
 
-The notebooks provide an interactive experimental view of the project, including classifier comparisons, training curves, Pegasos regularization experiments, learned feature weights, comparison of word weights across classifiers, and automated tests.
+The notebooks import the reusable implementation from `review_analyzer.py`. If the Python module is edited while a notebook kernel is running, restart the kernel or use IPython's autoreload support so that the notebook executes the updated module.
 
-## 13. Running the tests
+## 13. Running tests
+
+From the project directory:
 
 ```bash
-python3 -m unittest -v test_review_analyzer.py
+python3 -m unittest -v
 ```
 
-The tests cover:
-
-- review parsing;
-- vocabulary construction;
-- sparse feature extraction;
-- prediction and accuracy;
-- perceptron learning;
-- average perceptron learning;
-- Pegasos learning;
-- a small end-to-end sentiment-classification example.
-
-## 14. Correct experimental workflow
-
-For a real experiment, keep the test set untouched while making model choices:
-
-```text
-reviews
-   |
-   +-------------------+
-   |                   |
-training             test
-   |
-   v
-build vocabulary
-   |
-   v
-train classifier
-   |
-   v
-validation / cross-validation
-   |
-   v
-choose algorithm + hyperparameters
-   |
-   v
-retrain on all training data
-   |
-   v
-final test evaluation
-```
-
-In particular, the vocabulary should be learned from the training data rather than from the complete dataset. Otherwise information from validation or test examples can leak into the representation.
-
-## 15. Important Pegasos hyperparameters
-
-The implementation exposes:
-
-- `lambda_` — regularization strength;
-- `epochs` — number of passes through the training examples;
-- `batch_size` — number of examples in each stochastic update;
-- `seed` — random seed used for shuffling.
-
-These are **hyperparameters**, not learned model parameters.
-
-For Pegasos, the regularization parameter is especially important because the learning rate is tied to it:
-
-$$
-\eta_t=\frac{1}{\lambda t}
-$$
-
-Changing $\lambda$ therefore changes both the regularization strength and the optimization schedule.
-
-## 16. Study questions
-
-1. Why is $y\theta^{T}x$ more useful for the perceptron update than looking at $\theta^{T}x$ alone?
-2. What does the hinge-loss margin condition $y\theta^{T}x<1$ mean?
-3. Why does Pegasos include a projection step?
-4. How does L2 regularization affect the parameter vector?
-5. Why should the vocabulary be constructed from training data only?
-6. Why can averaging perceptron parameters improve stability?
-7. How does the Pegasos update connect Lecture 3's hinge loss to stochastic optimization in Lecture 4?
-8. Why is Pegasos particularly appropriate for sparse text features?
-9. Why do Perceptron, Average Perceptron, and Pegasos all produce word weights?
-10. How can comparing the signs and magnitudes of the three sets of word weights help us interpret the classifiers?
-
-## 17. Relation to Unit 1
-
-This project is the practical synthesis of the unit:
-
-```text
-Lecture 1
-Binary classification
-       |
-       v
-Lecture 2
-Linear classifiers + perceptron
-       |
-       v
-Lecture 3
-Hinge loss + margins + regularization
-       |
-       v
-Lecture 4
-Generalization + validation + hyperparameters
-       |
-       v
-Project 1
-Automatic Review Analyzer
-       |
-       +--> bag-of-words text representation
-       +--> perceptron
-       +--> average perceptron
-       +--> Pegasos / regularized SVM
-       +--> validation and final evaluation
-       +--> research experiments + visualizations
-       +--> word-weight interpretability
-```
-
-The project should be studied as an application of the mathematical ideas in the lectures, not as an unrelated NLP exercise.
-
-## 18. Attribution
-
-The project is an original study-oriented implementation inspired by the MIT 6.86x course material and the Pegasos research paper. It is not a copy of the course's proprietary starter code or solution code.
-
-## Equation-rendering safeguard
-
-The equations in this README intentionally follow the same conservative GitHub MathJax style used in Lecture 1 and the later lecture READMEs:
-
-- display equations use `$$` on separate lines;
-- inline mathematics uses `$...$`;
-- transposes use the explicit form `^{T}`;
-- the sign function uses `\mathrm{sign}(...)`;
-- the error function uses `\mathrm{error}(...)` rather than the unsupported `\operatorname{error}(...)`;
-- multiline matrices use explicit `\\` row separators;
-- `cases` and `aligned` environments remain entirely inside a display block;
-- equations are never placed inside Markdown code blocks;
-- no single-backslash matrix row separators are used.
-
-When editing this file, preserve these conventions and verify the **rendered GitHub page**, not only the raw Markdown source.
+The tests cover tokenization, parsing, deterministic vocabulary construction, sparse feature extraction, the three learning algorithms, deterministic Pegasos behavior for a fixed seed, the Pegasos projection constraint, mini-batch normalization, and an end-to-end training/validation path.
