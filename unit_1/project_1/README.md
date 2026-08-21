@@ -174,7 +174,7 @@ If the example satisfies the margin, the loss contribution has zero sub-gradient
 For the mini-batch implementation in this project, let $B_t$ be the current batch and let $r=|B_t|$. Define the active subset by
 
 $$
-A_t=\left\{i\in B_t:y_i\theta_t^{T}x_i<1\right\}
+A_t=\{i\in B_t:y_i\theta_t^{T}x_i<1\}
 $$
 
 The hinge-loss contribution is averaged over the **full batch size** $r$:
