@@ -228,9 +228,11 @@ def pegasos(
                 if abs(weights[index]) < 1e-15:
                     del weights[index]
 
-            # Estimated hinge-loss sub-gradient contribution.
+            # Estimate the batch hinge-loss sub-gradient. The denominator is
+            # the full batch size because inactive examples contribute zero,
+            # rather than the number of active examples.
             if active:
-                scale = eta / len(active)
+                scale = eta / len(batch_indices)
                 for label, features in active:
                     _add_scaled(weights, features, scale * label)
 
