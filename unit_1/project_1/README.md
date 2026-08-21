@@ -171,7 +171,27 @@ $$
 
 If the example satisfies the margin, the loss contribution has zero sub-gradient and only the regularization shrinkage remains.
 
-The implementation then projects the parameter vector onto the ball required by the Pegasos algorithm.
+For the mini-batch implementation in this project, let $B_t$ be the current batch and let $r=|B_t|$. Define the active subset by
+
+$$
+A_t=\{i\in B_t:y_i\theta_t^{T}x_i<1\}
+$$
+
+The hinge-loss contribution is averaged over the **full batch size** $r$:
+
+$$
+\theta_{t+1/2}=(1-\eta_t\lambda)\theta_t+\frac{\eta_t}{r}\sum_{i\in A_t}y_i x_i
+$$
+
+Inactive examples contribute zero to the sum, but they remain part of the batch average. Therefore the implementation uses `len(batch_indices)` as the denominator rather than `len(active)`.
+
+The implementation then projects the parameter vector onto the ball required by the Pegasos algorithm:
+
+$$
+\|\theta\|\leq\frac{1}{\sqrt{\lambda}}
+$$
+
+This projection is separate from the per-step regularization shrinkage: shrinkage is part of every update, while projection enforces the norm constraint after the update.
 
 ### Why this paper matters here
 
@@ -278,6 +298,9 @@ The tests cover:
 - perceptron learning;
 - average perceptron learning;
 - Pegasos learning;
+- deterministic Pegasos behavior for a fixed seed;
+- the Pegasos projection constraint;
+- mini-batch normalization;
 - a small end-to-end sentiment-classification example.
 
 ## 14. Correct experimental workflow

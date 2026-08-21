@@ -30,11 +30,11 @@ Connects linear classification to generalization and model selection, including 
 
 **Study artifact:** `lecture_4/README.md` and the executable Lecture 4 notebook.
 
-### Recitation 1: Tuning the Regularization Hyperparameter by Cross Validation and a Demonstration
+### Recitation 4. Cross Validation
 
-Provides a practical demonstration of tuning the regularization hyperparameter using cross-validation and connects the procedure to the concepts developed in the lectures.
+Provides a practical demonstration of tuning the regularization hyperparameter using cross-validation and connects the procedure to the concepts developed in Lecture 4.
 
-**Study artifact:** the Recitation 1 notebook and supporting documentation.
+**Study artifact:** `lecture_4/recitation_4_cross_validation.ipynb`.
 
 ### Project 1. Automatic Review Analyzer
 
@@ -63,8 +63,8 @@ Hinge loss, Margin boundaries and Regularization
 Lecture 4
 Linear Classification and Generalization
         ↓
-Recitation 1
-Tuning the Regularization Hyperparameter by Cross Validation
+Recitation 4
+Cross Validation
         ↓
 Project 1
 Automatic Review Analyzer
