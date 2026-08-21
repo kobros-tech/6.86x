@@ -6,8 +6,8 @@ The project separates **general-purpose learning algorithms** from **review-spec
 
 - `linear_classification.py` contains sparse Perceptron, Average Perceptron, and Pegasos implementations.
 - `review_data.py` contains the UCI review loading, reproducible stratified split, tokenization, vocabulary construction, and vectorization pipeline shared by the notebooks.
-- `automatic_review_analyzer.ipynb` is the main experiment: it builds the sparse representation, performs a controlled comparison, selects Pegasos `lambda`, evaluates the final models, examines word weights, and shows separate two-feature decision-boundary figures.
-- `word_weight_comparison.ipynb` focuses on the final learned word weights using exactly the same split, vocabulary, training budget, and selected Pegasos `lambda` as the main experiment.
+- `automatic_review_analyzer.ipynb` is the main experiment: it builds the sparse representation, performs a controlled comparison, selects Pegasos `lambda`, evaluates the final models, and examines word weights.
+- `word_weight_comparison.ipynb` focuses on the final learned word weights using the same split, vocabulary, training budget, and selected Pegasos `lambda` as the main experiment.
 - `demo.py` is a small dependency-free demonstration of the general classifier module.
 - `test_linear_classification.py` tests the reusable algorithms.
 
@@ -39,7 +39,7 @@ $$
 \hat{y}=\mathrm{sign}\left(\theta^T x\right).
 $$
 
-For a classifier with a bias term, the feature vector can be augmented with a constant one so that the same expression represents an affine decision boundary.
+For a classifier with a bias term, the feature vector can be augmented with a constant one so that the same expression represents an affine decision function.
 
 ## 2. Project structure
 
@@ -95,6 +95,8 @@ $$
 
 The project uses a binary bag-of-words representation: a vocabulary word contributes `1` when it occurs in a review. The feature representation is sparse, so only nonzero features are stored.
 
+The resulting feature space is **high-dimensional**: each vocabulary word corresponds to one dimension. In the current 3,000-review experiment, the training vocabulary contains approximately 1,766 words, so each review is represented as a sparse vector in approximately $\mathbb{R}^{1766}$. The classifiers operate on this full feature space during training and evaluation; there is no 2-D projection involved in the actual classification experiment.
+
 The vocabulary is built from training reviews only. Validation and test reviews are transformed using that existing vocabulary. This avoids leaking information from validation or test data into the representation.
 
 ## 4. General-purpose linear classifiers
@@ -124,8 +126,6 @@ when
 $$
 y_i\theta^T x_i\leq 0.
 $$
-
-The quantity $y_i\theta^T x_i$ combines the true label with the classifier score. A positive value means the prediction has the correct sign; a non-positive value means that the example is misclassified or lies on the decision boundary.
 
 ### Average Perceptron
 
@@ -169,15 +169,11 @@ $$
 \theta_{t+1/2}=(1-\eta_t\lambda)\theta_t+\frac{\eta_t}{|B_t|}\sum_{i\in A_t}y_i x_i.
 $$
 
-Inactive examples contribute zero to the sum, but remain part of the batch average.
-
 The implementation then projects the parameter vector onto the Pegasos ball:
 
 $$
 \|\theta\|\leq\frac{1}{\sqrt{\lambda}}.
 $$
-
-Shrinkage and projection have different roles: shrinkage is part of every update, while projection enforces the norm constraint.
 
 ## 5. Hyperparameter selection
 
@@ -191,9 +187,7 @@ $$
 
 If multiple values have the same maximum validation accuracy, the project selects the smallest one.
 
-Lecture 4 uses the symbol $\alpha$ for its regularization coefficient. The project keeps this notation distinct: Pegasos uses `lambda_`, while the Lecture 4 SVM implementation uses `alpha`. They should not be silently treated as the same variable merely because both control regularization.
-
-Perceptron and Average Perceptron do not have this explicit regularization parameter, so the project does not invent an `alpha` or `lambda` for them.
+Lecture 4 uses the symbol $\alpha$ for its regularization coefficient. The project keeps this notation distinct: Pegasos uses `lambda_`, while the Lecture 4 SVM implementation uses `alpha`.
 
 The test set must remain untouched while selecting the algorithm and hyperparameters.
 
@@ -207,8 +201,7 @@ The test set must remain untouched while selecting the algorithm and hyperparame
 4. a separate **Pegasos hyperparameter selection** experiment using validation accuracy;
 5. a **final model comparison** after retraining on train + validation;
 6. final test evaluation on the untouched test set;
-7. learned word-weight analysis;
-8. separate two-feature decision-boundary visualizations.
+7. learned word-weight analysis.
 
 ### Controlled vs tuned comparison
 
@@ -229,24 +222,6 @@ These are intentionally different experiments.
 
 This distinction prevents a hyperparameter-selection result from being confused with a controlled algorithm comparison.
 
-### Decision-boundary visualization
-
-The full bag-of-words representation has many dimensions, so it cannot be drawn directly in two dimensions. The notebook therefore trains separate two-feature models using `excellent` and `terrible` as coordinates.
-
-For a two-dimensional classifier,
-
-$$
-\theta_1x_1+\theta_2x_2=0
-$$
-
-and, when $\theta_2\neq0$,
-
-$$
-x_2=-\frac{\theta_1}{\theta_2}x_1.
-$$
-
-Each classifier receives its own figure. The plots provide geometric intuition without pretending that the complete sentiment model is only two-dimensional.
-
 ## 7. Learned word weights
 
 Because the review representation is a bag of words, every vocabulary word corresponds to one component of the learned parameter vector.
@@ -261,17 +236,15 @@ With binary bag-of-words, a present word has $x_j=1$, so its weight is directly 
 
 These weights are **not specific to Pegasos**. Perceptron, Average Perceptron, and Pegasos are all linear classifiers over the same vocabulary. Their different training rules and objectives can produce different numerical weights.
 
-`word_weight_comparison.ipynb` analyzes the **final models** using the same split and vocabulary as the main notebook and the selected Pegasos `lambda* = 5e-3` found by the current experiment.
+`word_weight_comparison.ipynb` analyzes the **final models** using the same split and vocabulary as the main notebook and the selected Pegasos `lambda* = 5e-3` found by the experiment.
 
-The word-weight plot is an interpretability experiment, not evidence that individual words universally determine sentiment.
+The word-weight analysis is an interpretability experiment, not evidence that individual words universally determine sentiment.
 
 ## 8. Research connection
 
 The Pegasos implementation is connected to:
 
 > Shalev-Shwartz, S., Singer, Y., Srebro, N., & Cotter, A. (2011). *Pegasos: Primal estimated sub-gradient solver for SVM*. Mathematical Programming, 127(1), 3–30. DOI: 10.1007/s10107-010-0420-4.
-
-The paper presents Pegasos as a stochastic sub-gradient method for the primal SVM objective and discusses its suitability for large-scale learning. Sparse bag-of-words features make this connection particularly natural for text classification.
 
 The project experiments are study-oriented demonstrations rather than claims about general sentiment performance.
 
@@ -288,49 +261,28 @@ The review-specific data preparation is isolated from the general-purpose learni
 
 Labels are represented as `+1` and `-1`.
 
-## 10. Running the demo
-
-From the project directory:
+## 10. Running the demo and notebooks
 
 ```bash
 python3 demo.py
 ```
 
-The demo uses sparse labeled vectors directly and trains all three classifiers. It demonstrates that the learning module is independent of the review application.
-
-## 11. Running the notebooks
-
 ```bash
 jupyter notebook automatic_review_analyzer.ipynb
-```
-
-For the focused word-weight experiment:
-
-```bash
 jupyter notebook word_weight_comparison.ipynb
 ```
 
 The notebooks download the UCI dataset if it is not already present under `data/sentiment_labelled_sentences/`.
 
-## 12. Running the tests
+## 11. Running the tests
 
 ```bash
 python3 -m unittest -v test_linear_classification.py
 ```
 
-The tests cover:
+The tests cover Perceptron, Average Perceptron, Pegasos, deterministic Pegasos behavior for a fixed seed, the Pegasos projection constraint, mini-batch normalization, and basic input validation.
 
-- Perceptron learning;
-- Average Perceptron learning;
-- Pegasos learning;
-- deterministic Pegasos behavior for a fixed seed;
-- the Pegasos projection constraint;
-- mini-batch normalization;
-- basic input validation.
-
-## 13. Experimental safeguards
-
-For a real experiment:
+## 12. Experimental safeguards
 
 ```text
 reviews
@@ -360,7 +312,7 @@ final test evaluation
 
 The test set must not influence model selection. The vocabulary must also be learned from training data only. A fixed random seed is used for the Project 1 split and Pegasos mini-batch shuffling so that the experiments are reproducible.
 
-## 14. Relation to Unit 1
+## 13. Relation to Unit 1
 
 The project is the practical synthesis of the unit:
 
@@ -390,7 +342,6 @@ Automatic Review Analyzer
        +--> Pegasos / regularized SVM
        +--> validation and hyperparameter selection
        +--> word-weight interpretability
-       +--> decision-boundary visualization
 ```
 
 The project should therefore be studied as an application of the mathematical ideas in the lectures, not as an unrelated NLP exercise.
@@ -405,8 +356,4 @@ The equations in this README follow the conservative GitHub MathJax style used t
 - the sign function uses `\mathrm{sign}(...)`;
 - `\mathrm{ValidationAccuracy}` is used instead of unsupported `\operatorname{...}` macros;
 - equations are not placed inside Markdown code blocks;
-- no `\left` or `\right` delimiters are used unless they have a matching pair;
-- multiline expressions remain entirely inside a display block;
-- Markdown code blocks contain only literal code, not mathematical LaTeX.
-
-When editing this file, verify the **rendered GitHub page**, not only the raw Markdown source.
+- no `\left` or `\right` delimiters are used unless they have a matching pair.
