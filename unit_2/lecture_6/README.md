@@ -62,13 +62,13 @@ $$
 A linear classifier in the transformed coordinates is
 
 $$
-f(x)=\operatorname{sign}\left(\theta^T\phi(x)+\theta_0\right).
+f(x)=\mathrm{sign}\left(\theta^T\phi(x)+\theta_0\right).
 $$
 
 Expanding the dot product gives
 
 $$
-f(x)=\operatorname{sign}\left(\theta_1x+\theta_2x^2+\theta_0\right).
+f(x)=\mathrm{sign}\left(\theta_1x+\theta_2x^2+\theta_0\right).
 $$
 
 This is a **nonlinear classifier in the original $x$ space**, even though it is linear in the transformed feature vector.
@@ -369,7 +369,7 @@ $$
 and prediction becomes
 
 $$
-\operatorname{sign}\left(\sum_j\alpha_jy_jK(x_j,x)\right).
+f(x)=\mathrm{sign}\left(\sum_j\alpha_jy_jK(x_j,x)\right).
 $$
 
 8. The kernel Perceptron updates only the coefficient associated with a misclassified training example.
