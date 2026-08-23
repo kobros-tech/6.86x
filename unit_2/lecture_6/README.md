@@ -263,25 +263,19 @@ where $\alpha_j$ counts how many times the Perceptron has updated on training ex
 Now consider a new example $x$. Its score is obtained by substituting the expansion of $\theta$ into the inner product:
 
 $$
-\theta^T\phi(x)
-=
-\left(\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)\right)^T\phi(x)
+\theta^T\phi(x) = \left(\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)\right)^T\phi(x)
 $$
 
 By linearity of the inner product,
 
 $$
-\theta^T\phi(x)
-=
-\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)^T\phi(x)
+\theta^T\phi(x) = \sum_{j=1}^{n}\alpha_j y_j \phi(x_j)^T\phi(x)
 $$
 
 Using the kernel definition,
 
 $$
-\theta^T\phi(x)
-=
-\sum_{j=1}^{n}\alpha_j y_j K(x_j,x)
+\theta^T\phi(x) = \sum_{j=1}^{n}\alpha_j y_j K(x_j,x)
 $$
 
 So we no longer need to store the high-dimensional $\theta$ explicitly.
@@ -373,7 +367,7 @@ $$
 and prediction becomes
 
 $$
-f(x)=\mathrm{sign}\left(\sum_j\alpha_j y_j K(x_j,x)\right).
+f(x)=\mathrm{sign}\left(\sum_j\alpha_j y_j K(x_j,x)\right)
 $$
 
 8. The kernel Perceptron updates only the coefficient associated with a misclassified training example.
