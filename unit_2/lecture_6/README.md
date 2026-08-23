@@ -255,7 +255,7 @@ whenever example $i$ is misclassified.
 Starting from $\theta=0$, the final parameter vector can be written as
 
 $$
-\theta=\sum_{j=1}^{n}\alpha_jy_j\phi(x_j),
+\theta=\sum_{j=1}^{n}\alpha_j y_j \phi(x_j),
 $$
 
 where $\alpha_j$ counts how many times the Perceptron has updated on training example $j$.
@@ -265,7 +265,7 @@ Now consider a new example $x$. Its score is obtained by substituting the expans
 $$
 \theta^T\phi(x)
 =
-\left(\sum_{j=1}^{n}\alpha_jy_j\phi(x_j)\right)^T\phi(x).
+\left(\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)\right)^T\phi(x).
 $$
 
 By linearity of the inner product,
@@ -273,7 +273,7 @@ By linearity of the inner product,
 $$
 \theta^T\phi(x)
 =
-\sum_{j=1}^{n}\alpha_jy_j\phi(x_j)^T\phi(x).
+\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)^T\phi(x).
 $$
 
 Using the kernel definition,
@@ -281,7 +281,7 @@ Using the kernel definition,
 $$
 \theta^T\phi(x)
 =
-\sum_{j=1}^{n}\alpha_jy_jK(x_j,x)
+\sum_{j=1}^{n}\alpha_j y_j K(x_j,x)
 $$
 
 So we no longer need to store the high-dimensional $\theta$ explicitly.
@@ -297,13 +297,13 @@ $$
 For training example $i$, compute the score
 
 $$
-s_i=\sum_{j=1}^{n}\alpha_jy_jK(x_j,x_i).
+s_i=\sum_{j=1}^{n}\alpha_j y_j K(x_j,x_i).
 $$
 
 If
 
 $$
-y_is_i\le 0,
+y_i s_i\le 0,
 $$
 
 make a mistake and update
@@ -367,13 +367,13 @@ The core chain of ideas is:
 7. For the Perceptron,
 
 $$
-\theta=\sum_j\alpha_jy_j\phi(x_j)
+\theta=\sum_j\alpha_j y_j\phi(x_j)
 $$
 
 and prediction becomes
 
 $$
-f(x)=\mathrm{sign}\left(\sum_j\alpha_jy_jK(x_j,x)\right).
+f(x)=\mathrm{sign}\left(\sum_j\alpha_j y_j K(x_j,x)\right).
 $$
 
 8. The kernel Perceptron updates only the coefficient associated with a misclassified training example.
