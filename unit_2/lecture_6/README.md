@@ -281,7 +281,7 @@ Using the kernel definition,
 $$
 \theta^T\phi(x)
 =
-\sum_{j=1}^{n}\alpha_j y_j K(x_j,x)
+\sum_{j=1}^{n}\alpha_j y_j K(x_j,x).
 $$
 
 So we no longer need to store the high-dimensional $\theta$ explicitly.
