@@ -76,7 +76,7 @@ This is a **nonlinear classifier in the original $x$ space**, even though it is 
 ### Key principle
 
 $$
-\boxed{\text{linear in feature space} \;\Longrightarrow\; \text{possibly nonlinear in input space}}
+\text{linear in feature space} \;\Longrightarrow\; \text{possibly nonlinear in input space}
 $$
 
 The lecture emphasizes retaining the original coordinates when adding features so that the transformed representation does not discard the information available before transformation.
@@ -213,11 +213,9 @@ $$
 The important computational idea is:
 
 $$
-\boxed{
 \phi(x)^T\phi(x')
 \quad\text{can sometimes be computed directly as}\quad
 K(x,x')
-}
 $$
 
 without explicitly constructing $\phi(x)$ or $\phi(x')$.
@@ -281,11 +279,9 @@ $$
 Using the kernel definition,
 
 $$
-\boxed{
 \theta^T\phi(x)
 =
 \sum_{j=1}^{n}\alpha_jy_jK(x_j,x)
-}
 $$
 
 So we no longer need to store the high-dimensional $\theta$ explicitly.
