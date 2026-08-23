@@ -262,7 +262,15 @@ $$
 
 where $\alpha_j$ counts how many times the Perceptron has updated on training example $j$.
 
-Now consider a new example $x$. Its score is
+Now consider a new example $x$. Its score is obtained by substituting the expansion of $\theta$ into the inner product:
+
+$$
+\theta^T\phi(x)
+=
+\left(\sum_{j=1}^{n}\alpha_jy_j\phi(x_j)\right)^T\phi(x).
+$$
+
+By linearity of the inner product,
 
 $$
 \theta^T\phi(x)
