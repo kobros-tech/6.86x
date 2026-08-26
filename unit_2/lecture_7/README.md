@@ -9,6 +9,8 @@ The key distinction is:
 - $\hat X$ is the model's predicted complete matrix.
 - $U$ and $V$ are learned latent-factor matrices.
 
+The final matrix-completion step is demonstrated in [`03_final_matrix_completion.ipynb`](./03_final_matrix_completion.ipynb).
+
 ---
 
 ## 1. The rating matrix
@@ -24,7 +26,7 @@ Entry $X_{ai}$ is the rating of user $a$ for movie $i$.
 Let $\Omega$ be the set of observed user-movie pairs:
 
 $$
-\Omega=\{(a,i):Y_{ai}\text{ is observed}\}.
+\Omega={(a,i):Y_{ai}\text{ is observed}}.
 $$
 
 For example, an observed-rating matrix can contain missing entries:
@@ -183,8 +185,8 @@ Their outer product is
 $$
 uv^T=
 \begin{bmatrix}
- u_1v_1 & u_1v_2 & u_1v_3\\
- u_2v_1 & u_2v_2 & u_2v_3
+u_1v_1 & u_1v_2 & u_1v_3\\
+u_2v_1 & u_2v_2 & u_2v_3
 \end{bmatrix}.
 $$
 
@@ -217,14 +219,14 @@ The first term measures reconstruction error on **observed ratings only**. The s
 For rank $k$,
 
 $$
-J(U,V)=\frac{1}{2}\sum_{(a,i)\in\Omega}\left(Y_{ai}-u_a^Tv_i\right)^2+\frac{\lambda}{2}\left(\|U\|_F^2+\|V\|_F^2\right).
+J(U,V)=\frac{1}{2}\sum_{(a,i)\in\Omega}\left(Y_{ai}-u_a^Tv_i\right)^2+\frac{\lambda}{2}\left(|U|_F^2+|V|_F^2\right).
 $$
 
 The missing ratings do not appear in the data-fitting term because their true values are unknown.
 
 ---
 
-## 7. Alternating minimization and rank selection
+## 7. Alternating minimization and selecting $k$ and $\lambda$
 
 With the movie factors fixed, update one user factor at a time. For user $a$,
 
@@ -236,12 +238,14 @@ This keeps the movie factors fixed and chooses the value of $u_a$ that minimizes
 
 For user 1 and $v=(2,7,8)$, the observed ratings are $Y_{11}=5$ and $Y_{13}=7$. Therefore,
 
-$$\nu_1=\frac{5(2)+7(8)}{\lambda+2^2+8^2}=\frac{66}{\lambda+68}.
+$$
+u_1=\frac{5(2)+7(8)}{\lambda+2^2+8^2}=\frac{66}{\lambda+68}.
 $$
 
 For user 2, the observed ratings are $Y_{21}=1$ and $Y_{22}=2$. Therefore,
 
-$$\nu_2=\frac{1(2)+2(7)}{\lambda+2^2+7^2}=\frac{16}{\lambda+53}.
+$$
+u_2=\frac{1(2)+2(7)}{\lambda+2^2+7^2}=\frac{16}{\lambda+53}.
 $$
 
 The observed rating `1` is used in the update for $u_2$; a missing rating is not used.
@@ -254,7 +258,7 @@ $$
 
 The algorithm alternates:
 
-```text
+```
 initialize v
     |
     v
@@ -275,11 +279,27 @@ $$
 \hat X_{ai}=u_a^Tv_i=\sum_{r=1}^{k}U_{ar}V_{ir}.
 $$
 
-The value $k$ is the number of latent dimensions. It is a hyperparameter, so candidate values can be compared using validation performance. If larger validation score is better,
+The value $k$ is the number of latent dimensions. It is a hyperparameter. Increasing $k$ gives the model more latent dimensions and therefore more freedom to fit the observed ratings, but a larger $k$ does not necessarily give better predictions for unseen ratings.
+
+The regularization strength $\lambda$ is **also a hyperparameter**. It controls how strongly large values in $U$ and $V$ are penalized. Small $\lambda$ allows the factors more freedom to fit the observed ratings, while large $\lambda$ constrains the factor values more strongly.
+
+Thus, $k$ controls the size of the latent representation, while $\lambda$ controls how strongly that representation is regularized. Because these two hyperparameters can interact, we select them jointly rather than independently.
+
+Candidate values of $\lambda$ are commonly searched on a logarithmic scale, for example
 
 $$
-k^*=\arg\max_k S_{\mathrm{val}}(k).
+\lambda\in{10^{-4},10^{-3},10^{-2},10^{-1},1}.
 $$
+
+We compare candidate pairs $(k,\lambda)$ and select the pair that gives the best validation performance. When the validation metric is RMSE, lower is better:
+
+$$
+(k^{\ast},\lambda^{\ast})=
+\underset{k,\lambda}{\arg\min}
+RMSE_{\mathrm{val}}(k,\lambda).
+$$
+
+Notebook `02_rank_selection.ipynb` demonstrates this joint selection experiment on the synthetic matrix. Notebook `03_final_matrix_completion.ipynb` then uses the selected $k^{\ast}$ and $\lambda^{\ast}$ to fit the final model and predict the missing entries.
 
 ---
 
@@ -297,7 +317,10 @@ $$
 10. The loss uses only $(a,i)\in\Omega$ because missing ratings are unknown.
 11. Alternating minimization updates one factor block while holding the other fixed.
 12. $k$ is the number of latent dimensions and is selected as a hyperparameter.
-13. Missing ratings are predicted from the learned $\hat X$.
+13. $\lambda$ controls regularization strength and is also selected as a hyperparameter.
+14. $k$ and $\lambda$ interact, so the model-selection step compares candidate pairs $(k,\lambda)$.
+15. The final model uses the jointly selected pair $(k^{\ast},\lambda^{\ast})$.
+16. Missing ratings are predicted from the learned $\hat X$.
 
 ---
 
@@ -317,21 +340,7 @@ $\sum_{i=1}^{m}v_i^2$
 
 ### 2. Keep headings and equations separate
 
-Do not write a heading and a display equation on the same line:
-
-```
-# $$ J(u,v)
-```
-
-Write the heading normally, then put the equation in its own display block:
-
-```
-## The regularized objective
-
-$$
-J(u,v)=...
-$$
-```
+Do not write a heading and a display equation on the same line. Keep the heading as a normal Markdown heading and put the equation in its own display block.
 
 ### 3. Use `$$` for display equations
 
@@ -352,7 +361,7 @@ Inside math delimiters, write `_` normally:
 ```
 $u_a$
 $Y_{ai}$
-$\sum_{i=1}^{m}v_i^2$
+$RMSE_{\mathrm{val}}$
 ```
 
 Do not write `\_` inside a LaTeX math expression.
