@@ -105,6 +105,8 @@ $$
 \hat X_{ai}=\sum_{r=1}^{k}U_{ar}V_{ir}.
 $$
 
+For $k=1$, this inner product reduces to ordinary scalar multiplication, which is why the rank-1 expression is simply $u_av_i$.
+
 The matrix form is
 
 $$
@@ -298,3 +300,93 @@ $$
 11. Alternating minimization updates one factor block while holding the other fixed.
 12. $k$ is the number of latent dimensions and is selected as a hyperparameter.
 13. Missing ratings are predicted from the learned $\hat X$.
+
+---
+
+## README writing and math-rendering clues
+
+These notes document the Markdown/LaTeX conventions that work reliably for the GitHub README files in this repository.
+
+### 1. Use one consistent style for mathematical examples
+
+Use plain code fences for every Markdown/LaTeX source example in this section. Do not add a language label such as `markdown` or `text`, because syntax highlighting can make examples appear inconsistently colored.
+
+```
+$u_a$
+$Y_{ai}$
+$\sum_{i=1}^{m}v_i^2$
+```
+
+### 2. Keep headings and equations separate
+
+Do not write a heading and a display equation on the same line:
+
+```
+# $$ J(u,v)
+```
+
+Write the heading normally, then put the equation in its own display block:
+
+```
+## The regularized objective
+
+$$
+J(u,v)=...
+$$
+```
+
+### 3. Use `$$` for display equations
+
+For equations that should appear on their own line, use a standalone opening and closing `$$`:
+
+```
+$$
+X\approx UV^T.
+$$
+```
+
+For short expressions inside normal text, use single `$` delimiters.
+
+### 4. Do not escape underscores inside LaTeX
+
+Inside math delimiters, write `_` normally:
+
+```
+$u_a$
+$Y_{ai}$
+$\sum_{i=1}^{m}v_i^2$
+```
+
+Do not write `\_` inside a LaTeX math expression.
+
+### 5. Be careful when generating README content
+
+When generating Markdown through another programming or tool layer, special character sequences can be interpreted before GitHub sees them. Inspect the raw Markdown source after writing it, especially around LaTeX commands and newlines.
+
+### 6. Keep matrix equations in a simple `bmatrix` block
+
+Use this style for matrices:
+
+```
+$$
+Y=
+\begin{bmatrix}
+5 & \text{missing} & 7\\
+1 & 2 & \text{missing}
+\end{bmatrix}.
+$$
+```
+
+Use `\\` for row breaks and `&` between columns.
+
+### 7. Check the raw Markdown, not only the rendered page
+
+When a formula looks wrong on GitHub, inspect the actual README source. Look especially for heading markers attached to equations, escaped underscores inside math, missing `$$` delimiters, malformed `\left` / `\right` pairs, and incorrect matrix row breaks.
+
+### 8. Copy the style from the earlier Unit 2 READMEs
+
+Before adding new mathematics, compare the formatting with the existing Lecture 5 and Lecture 6 README files. Keeping the same conventions is safer than introducing a new Markdown/LaTeX style.
+
+### Final rule
+
+**Keep Markdown structure and LaTeX structure separate.** Headings, lists, code fences, and paragraphs belong to Markdown; mathematical notation belongs inside `$...$` or `$$...$$`.
