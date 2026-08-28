@@ -30,13 +30,13 @@ $$
 A linear classifier uses
 
 $$
-f(x;\theta)=\theta^T x
+f(x;\theta)=\theta^{T} x
 $$
 
 and predicts
 
 $$
-\hat{y}=\mathrm{sign}\left(\theta^T x\right).
+\hat{y}=\mathrm{sign}\left(\theta^{T} x\right).
 $$
 
 For a classifier with a bias term, the feature vector can be augmented with a constant one so that the same expression represents an affine decision function.
@@ -124,7 +124,7 @@ $$
 when
 
 $$
-y_i\theta^T x_i\leq 0.
+y_i\theta^{T} x_i\leq 0.
 $$
 
 ### Average Perceptron
@@ -142,13 +142,13 @@ The implementation uses lazy timestamp accumulation so that the averaging remain
 Pegasos optimizes a regularized linear SVM objective. For a training example $(x,y)$, the hinge loss is
 
 $$
-\ell(\theta;(x,y))=\max\{0,1-y\theta^T x\}.
+\ell(\theta;(x,y))=\max\{0,1-y\theta^{T} x\}.
 $$
 
 The regularized objective is
 
 $$
-J(\theta)=\frac{\lambda}{2}\|\theta\|^2+\frac{1}{m}\sum_{i=1}^{m}\max\{0,1-y_i\theta^T x_i\}.
+J(\theta)=\frac{\lambda}{2}\|\theta\|^2+\frac{1}{m}\sum_{i=1}^{m}\max\{0,1-y_i\theta^{T} x_i\}.
 $$
 
 The learning rate is
@@ -346,14 +346,4 @@ Automatic Review Analyzer
 
 The project should therefore be studied as an application of the mathematical ideas in the lectures, not as an unrelated NLP exercise.
 
-## Equation-rendering safeguard
-
-The equations in this README follow the conservative GitHub MathJax style used throughout the Unit 1 documentation:
-
-- display equations use `$$` on separate lines;
-- inline mathematics uses `$...$`;
-- transposes use the explicit form `^{T}`;
-- the sign function uses `\mathrm{sign}(...)`;
-- `\mathrm{ValidationAccuracy}` is used instead of unsupported `\operatorname{...}` macros;
-- equations are not placed inside Markdown code blocks;
-- no `\left` or `\right` delimiters are used unless they have a matching pair.
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

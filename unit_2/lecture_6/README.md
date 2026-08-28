@@ -62,7 +62,7 @@ $$
 A linear classifier in the transformed coordinates is
 
 $$
-f(x)=\mathrm{sign}\left(\theta^T\phi(x)+\theta_0\right).
+f(x)=\mathrm{sign}\left(\theta^{T}\phi(x)+\theta_0\right).
 $$
 
 Expanding the dot product gives
@@ -229,7 +229,7 @@ This is the **kernel trick**.
 Suppose a linear method in feature space needs an expression involving
 
 $$
-\theta^T\phi(x).
+\theta^{T}\phi(x).
 $$
 
 If the learned parameter vector can itself be expressed using training feature vectors, then predictions can be rewritten using inner products between training examples and the new example.
@@ -263,19 +263,19 @@ where $\alpha_j$ counts how many times the Perceptron has updated on training ex
 Now consider a new example $x$. Its score is obtained by substituting the expansion of $\theta$ into the inner product:
 
 $$
-\theta^T\phi(x) = \left(\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)\right)^T\phi(x)
+\theta^{T}\phi(x) = \left(\sum_{j=1}^{n}\alpha_j y_j \phi(x_j)\right)^T\phi(x)
 $$
 
 By linearity of the inner product,
 
 $$
-\theta^T\phi(x) = \sum_{j=1}^{n}\alpha_j y_j \phi(x_j)^T\phi(x)
+\theta^{T}\phi(x) = \sum_{j=1}^{n}\alpha_j y_j \phi(x_j)^T\phi(x)
 $$
 
 Using the kernel definition,
 
 $$
-\theta^T\phi(x) = \sum_{j=1}^{n}\alpha_j y_j K(x_j,x)
+\theta^{T}\phi(x) = \sum_{j=1}^{n}\alpha_j y_j K(x_j,x)
 $$
 
 So we no longer need to store the high-dimensional $\theta$ explicitly.

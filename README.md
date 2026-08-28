@@ -10,8 +10,8 @@ The course progresses from mathematical prerequisites through supervised learnin
 
 | Unit | Main focus | Status |
 | --- | --- | --- |
-| [Unit 0](unit_0/) | Brief prerequisite reviews | Complete |
-| [Unit 1](unit_1/) | Linear classifiers and generalization | Complete |
+| [Unit 0](unit_0/) | Brief prerequisite reviews | Available |
+| [Unit 1](unit_1/) | Linear classifiers and generalization | Available |
 | [Unit 2](unit_2/) | Regression, nonlinear classification, and collaborative filtering | In progress |
 | Unit 3 | Neural networks | Planned |
 | Unit 4 | Unsupervised machine learning | Planned |
