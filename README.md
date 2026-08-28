@@ -18,6 +18,14 @@ The repository combines mathematical notes, executable Python/NumPy demonstratio
 - **Lecture 3. Hinge loss, Margin boundaries and Regularization**
 - **Lecture 4. Linear Classification and Generalization**
 - **Recitation 1: Tuning the Regularization Hyperparameter by Cross Validation and a Demonstration**
+- **Project 1. Automatic Review Analyzer**
+
+### Unit 2. Regression, Nonlinear Classification, and Neural Networks
+
+- **Lecture 5. Linear Regression**
+- **Lecture 6. Nonlinear Classification**
+- **Lecture 7. Matrix Factorization and Collaborative Filtering**
+- **Project 2. MNIST Digit Recognition**
 
 ## Learning approach
 
@@ -36,6 +44,7 @@ The repository follows a consistent progression:
 | --- | --- | --- |
 | [Unit 0](unit_0/) | Brief Prerequisite Reviews | Reference material |
 | [Unit 1](unit_1/) | Linear Classifiers and Generalizations | In progress |
+| [Unit 2](unit_2/) | Regression, Nonlinear Classification, and Neural Networks | In progress |
 
 ## Mathematical notation
 
@@ -48,7 +57,8 @@ When editing mathematical documentation, always inspect the **rendered GitHub pa
 ```text
 .
 ├── unit_0/    # Brief Prerequisite Reviews
-└── unit_1/    # Linear Classifiers and Generalizations
+├── unit_1/    # Linear Classifiers and Generalizations
+└── unit_2/    # Regression, Nonlinear Classification, and Neural Networks
 ```
 
 Each lecture directory is intended to contain its study documentation and executable learning artifacts.
