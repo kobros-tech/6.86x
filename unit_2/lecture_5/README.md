@@ -160,10 +160,10 @@ Put the training examples into a design matrix:
 $$
 X=
 \begin{bmatrix}
- x_1^T \\
- x_2^T \\
+ x_1^{T} \\
+ x_2^{T} \\
  \vdots \\
- x_n^T
+ x_n^{T}
 \end{bmatrix}
 $$
 
@@ -206,13 +206,13 @@ $$
 the gradient with respect to $\theta$ is
 
 $$
-\nabla J(\theta)=\frac{1}{n}X^T(X\theta-y).
+\nabla J(\theta)=\frac{1}{n}X^{T}(X\theta-y).
 $$
 
 The interpretation is useful:
 
 - $X\theta-y$ contains the current prediction errors;
-- $X^T$ maps those errors back onto the parameter directions;
+- $X^{T}$ maps those errors back onto the parameter directions;
 - the result tells us how the objective changes if we change each parameter.
 
 To **minimize** the objective, we move in the opposite direction of the gradient.
@@ -233,7 +233,7 @@ Substituting the gradient gives
 
 $$
 \theta\leftarrow
-\theta-\frac{\eta}{n}X^T(X\theta-y).
+\theta-\frac{\eta}{n}X^{T}(X\theta-y).
 $$
 
 The learning loop is therefore:
@@ -290,19 +290,19 @@ $$
 Therefore,
 
 $$
-X^T(X\theta-y)=0.
+X^{T}(X\theta-y)=0.
 $$
 
 Rearranging gives the normal equations:
 
 $$
-X^TX\theta=X^Ty.
+X^{T}X\theta=X^{T}y.
 $$
 
-When $X^TX$ is invertible, the solution can be written as
+When $X^{T}X$ is invertible, the solution can be written as
 
 $$
-\theta^*=(X^TX)^{-1}X^Ty.
+\theta^*=(X^{T}X)^{-1}X^{T}y.
 $$
 
 This is the **closed-form linear regression solution**.
@@ -534,7 +534,7 @@ They are not the same quantity.
 The matrix gradient is
 
 $$
-\nabla J(\theta)=\frac{1}{n}X^T(X\theta-y).
+\nabla J(\theta)=\frac{1}{n}X^{T}(X\theta-y).
 $$
 
 The transpose is what maps the example-wise errors back into parameter space.
@@ -548,7 +548,7 @@ A learning rate that is too large can cause unstable updates or divergence. A le
 Although
 
 $$
-\theta^*=(X^TX)^{-1}X^Ty
+\theta^*=(X^{T}X)^{-1}X^{T}y
 $$
 
 is the useful mathematical expression, numerical implementations should generally solve the linear system directly.
@@ -581,7 +581,7 @@ $$
 5. Its gradient is
 
 $$
-\nabla J(\theta)=\frac{1}{n}X^T(X\theta-y).
+\nabla J(\theta)=\frac{1}{n}X^{T}(X\theta-y).
 $$
 
 6. Gradient descent minimizes the objective using
@@ -593,13 +593,13 @@ $$
 7. Setting the gradient to zero gives the normal equations:
 
 $$
-X^TX\theta=X^Ty.
+X^{T}X\theta=X^{T}y.
 $$
 
 8. When the system is invertible, the closed-form solution is
 
 $$
-\theta^*=(X^TX)^{-1}X^Ty.
+\theta^*=(X^{T}X)^{-1}X^{T}y.
 $$
 
 9. Gradient descent and the closed-form method are two different ways of solving the same least-squares problem.

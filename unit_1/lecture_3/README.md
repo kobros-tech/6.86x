@@ -336,3 +336,5 @@ The last two equations are especially important: the first is the **inner parame
 Open `lecture_3_linear_svm_from_scratch.ipynb` in Jupyter or VS Code and run the cells from top to bottom.
 
 The notebook is self-contained: code, calculations, training logs, and plots are generated when the notebook is executed. Nothing needs to be loaded from a `.py` or `.png` file.
+
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

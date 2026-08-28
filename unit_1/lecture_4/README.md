@@ -628,3 +628,5 @@ The intended progression is:
 6. inspect its performance and decision boundary.
 
 The notebooks are designed to complement the lecture rather than replace the conceptual explanations above.
+
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

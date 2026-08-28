@@ -419,3 +419,5 @@ cross-validation + hyperparameter selection
 Open `lecture_2_perceptron.ipynb` in Jupyter or VS Code and run the cells from top to bottom.
 
 The notebook is self-contained: code, calculations, training logs, and plots are generated when the notebook is executed.
+
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

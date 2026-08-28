@@ -48,13 +48,16 @@ Use `\\` for row breaks inside `bmatrix`, `pmatrix`, `aligned`, and similar mult
 
 ## 4. Transposes
 
-Use an explicit superscript:
+Always brace the transpose superscript, regardless of which symbol is being transposed:
 
 ```markdown
 $\theta^{T}x$
+$x^{T}z$
+$X^{T}X$
+$\phi(x)^{T}\phi(x')$
 ```
 
-rather than `$\theta^T x$` when documenting the repository's standard notation. Keep spacing consistent and avoid unnecessary visual variations.
+rather than `$\theta^T x$`, `$x^Tz$`, or similar unbraced forms. This applies even though `T` is a single character and the general rule in Section 9 would not otherwise require braces here — transposes are an explicit exception, kept consistent across the repository regardless of what is being transposed. Keep spacing consistent and avoid unnecessary visual variations.
 
 ## 5. Common operators and functions
 

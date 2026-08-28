@@ -139,7 +139,7 @@ The predicted class is the digit with the largest probability.
 For the polynomial kernel used in the project:
 
 $$
-K(x,z)=(x^Tz+c)^p.
+K(x,z)=(x^{T}z+c)^p.
 $$
 
 If model selection is performed, validation data must be used to choose parameters such as the polynomial degree or RBF scale. The test set remains untouched until final evaluation.

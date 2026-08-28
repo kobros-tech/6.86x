@@ -160,7 +160,7 @@ $$
 The project uses the mini-batch form of Pegasos. For a batch $B_t$, define the active subset
 
 $$
-A_t=\{i\in B_t:y_i\theta_t^T x_i<1\}.
+A_t=\{i\in B_t:y_i\theta_t^{T} x_i<1\}.
 $$
 
 The hinge-loss contribution is averaged over the **full batch size** $|B_t|$:
