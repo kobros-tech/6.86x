@@ -200,7 +200,7 @@ These values are plotted directly by the notebook.
 
 For each **fixed** value of `alpha`, the optimizer finds the best model parameters.
 
-To keep the notation unambiguous and GitHub-safe, we call these parameters the **best parameters for alpha**:
+We call these parameters the **best parameters for alpha**:
 
 $$
 (\theta_{\mathrm{best}}(\alpha),\theta_{0,\mathrm{best}}(\alpha))
