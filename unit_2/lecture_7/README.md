@@ -50,7 +50,7 @@ The central assumption is that users and movies can be represented using a small
 For rank $1$,
 
 $$
-X\approx uv^T,
+X\approx uv^{T},
 $$
 
 where $u$ contains one scalar latent coordinate for each user and $v$ contains one scalar latent coordinate for each movie.
@@ -58,7 +58,7 @@ where $u$ contains one scalar latent coordinate for each user and $v$ contains o
 For rank $k$,
 
 $$
-X\approx UV^T,
+X\approx UV^{T},
 $$
 
 where
@@ -96,7 +96,7 @@ $$
 For rank $k$, $u_a$ and $v_i$ are $k$-dimensional vectors, so the predicted rating is their inner product:
 
 $$
-\hat X_{ai}=u_a^Tv_i.
+\hat X_{ai}=u_a^{T}v_i.
 $$
 
 The transpose is needed here because the factors are vectors. Their inner product produces one scalar. In coordinates,
@@ -110,7 +110,7 @@ For $k=1$, this inner product reduces to ordinary scalar multiplication, which i
 The matrix form is
 
 $$
-\hat X=UV^T.
+\hat X=UV^{T}.
 $$
 
 Its dimensions are
@@ -119,7 +119,7 @@ $$
 (n\times k)(k\times m)=n\times m.
 $$
 
-Thus $UV^T$ produces one prediction for every user-movie pair.
+Thus $UV^{T}$ produces one prediction for every user-movie pair.
 
 ---
 
@@ -175,15 +175,15 @@ Here $5$ and $7$ are observed ratings, while $2$ and $8$ are latent movie factor
 For two users and three movies in a rank-1 model, write
 
 $$
-u=(u_1,u_2)^T,
+u=(u_1,u_2)^{T},
 \qquad
-v=(v_1,v_2,v_3)^T.
+v=(v_1,v_2,v_3)^{T}.
 $$
 
 Their outer product is
 
 $$
-uv^T=
+uv^{T}=
 \begin{bmatrix}
 u_1v_1 & u_1v_2 & u_1v_3\\u_2v_1 & u_2v_2 & u_2v_3
 \end{bmatrix}.
@@ -198,7 +198,7 @@ $$
 For rank $k$,
 
 $$
-\hat X=UV^T.
+\hat X=UV^{T}.
 $$
 
 The model therefore learns the latent factors and uses them to generate the complete prediction matrix.
@@ -218,7 +218,7 @@ The first term measures reconstruction error on **observed ratings only**. The s
 For rank $k$,
 
 $$
-J(U,V)=\frac{1}{2}\sum_{(a,i)\in\Omega}\left(Y_{ai}-u_a^Tv_i\right)^2+\frac{\lambda}{2}\left(\lVert U\rVert_F^2+\lVert V\rVert_F^2\right).
+J(U,V)=\frac{1}{2}\sum_{(a,i)\in\Omega}\left(Y_{ai}-u_a^{T}v_i\right)^2+\frac{\lambda}{2}\left(\lVert U\rVert_F^2+\lVert V\rVert_F^2\right).
 $$
 
 The missing ratings do not appear in the data-fitting term because their true values are unknown.
@@ -275,7 +275,7 @@ The joint objective is non-convex, so different initializations can lead to diff
 For rank $k$,
 
 $$
-\hat X_{ai}=u_a^Tv_i=\sum_{r=1}^{k}U_{ar}V_{ir}.
+\hat X_{ai}=u_a^{T}v_i=\sum_{r=1}^{k}U_{ar}V_{ir}.
 $$
 
 The value $k$ is the number of latent dimensions. It is a hyperparameter. Increasing $k$ gives the model more latent dimensions and therefore more freedom to fit the observed ratings, but a larger $k$ does not necessarily give better predictions for unseen ratings.
@@ -307,12 +307,12 @@ Notebook `02_rank_selection.ipynb` demonstrates this joint selection experiment 
 1. $Y$ contains observed ratings.
 2. $X$ is the unknown complete ratings matrix.
 3. $\hat X$ is the model's predicted complete matrix.
-4. For rank $1$, $\hat X=uv^T$.
-5. For rank $k$, $\hat X=UV^T$.
+4. For rank $1$, $\hat X=uv^{T}$.
+5. For rank $k$, $\hat X=UV^{T}$.
 6. $U$ stores one latent vector for each user, and $V$ stores one latent vector for each movie.
 7. A latent factor is a learned representation, not a rating.
 8. For rank $1$, a prediction is $u_av_i$ because the factors are scalars.
-9. For rank $k$, a prediction is $u_a^Tv_i$ because the factors are vectors.
+9. For rank $k$, a prediction is $u_a^{T}v_i$ because the factors are vectors.
 10. The loss uses only $(a,i)\in\Omega$ because missing ratings are unknown.
 11. Alternating minimization updates one factor block while holding the other fixed.
 12. $k$ is the number of latent dimensions and is selected as a hyperparameter.
@@ -320,3 +320,5 @@ Notebook `02_rank_selection.ipynb` demonstrates this joint selection experiment 
 14. $k$ and $\lambda$ interact, so the model-selection step compares candidate pairs $(k,\lambda)$.
 15. The final model uses the jointly selected pair $(k^{\ast},\lambda^{\ast})$.
 16. Missing ratings are predicted from the learned $\hat X$.
+
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).
