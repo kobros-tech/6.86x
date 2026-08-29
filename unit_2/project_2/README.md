@@ -139,7 +139,7 @@ The predicted class is the digit with the largest probability.
 For the polynomial kernel used in the project:
 
 $$
-K(x,z)=(x^Tz+c)^p.
+K(x,z)=(x^{T}z+c)^p.
 $$
 
 If model selection is performed, validation data must be used to choose parameters such as the polynomial degree or RBF scale. The test set remains untouched until final evaluation.
@@ -249,14 +249,4 @@ from neural_networks.fully_connected import build_fully_connected_model
 from two_digit.data_utils import get_two_digit_data
 ```
 
-## Equation-rendering safeguard
-
-The README follows the conservative GitHub MathJax style used throughout the Unit 2 lecture documentation:
-
-- display equations use `$$` on separate lines;
-- inline mathematics uses `$...$`;
-- transposes use `^{T}`;
-- no `\operatorname` macro is used;
-- no unmatched `\left` or `\right` delimiters are used;
-- equations are never placed inside Markdown code blocks;
-- expressions are kept simple enough for GitHub rendering.
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

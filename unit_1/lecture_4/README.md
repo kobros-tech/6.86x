@@ -12,7 +12,7 @@ Lecture 4 introduces a second question:
 
 > **How do we choose the hyperparameters of the learning algorithm?**
 
-The main hyperparameter in this lecture is **alpha (α)**, the strength of regularization.
+The main hyperparameter in this lecture is the regularization strength $\alpha$.
 
 The important distinction is:
 
@@ -80,7 +80,7 @@ The second term asks:
 
 The hyperparameter $\alpha$ controls the trade-off.
 
-### Small alpha (α)
+### Small $\alpha$
 
 If
 
@@ -92,7 +92,7 @@ regularization has little influence. The model concentrates on minimizing the tr
 
 This can allow the model to fit the training data very closely and may lead to **overfitting**.
 
-### Large alpha (α)
+### Large $\alpha$
 
 As $\alpha$ increases, regularization becomes more important. Large parameter values are penalized more strongly.
 
@@ -154,7 +154,7 @@ $$
 
 ---
 
-## 5. Why we do not choose alpha (α) using the test set
+## 5. Why we do not choose $\alpha$ using the test set
 
 Suppose we have:
 
@@ -416,7 +416,7 @@ For each candidate $\alpha$, a model is trained and evaluated using K-fold cross
 
 ---
 
-## 14. Searching over alpha (α)
+## 14. Searching over $\alpha$
 
 We normally do not calculate the perfect $\alpha$ analytically. Instead, we define a candidate grid.
 
@@ -478,7 +478,7 @@ The important rule is:
 For a linear classifier, the decision boundary has the form:
 
 $$
-\theta^T x + b = 0
+\theta^{T} x + b = 0
 $$
 
 In two dimensions this becomes:
@@ -492,7 +492,7 @@ The lecture plots this boundary using the first two attributes so that we can vi
 Remember that the plotted 2D line is only a visualization. The actual model can use all features:
 
 $$
-\theta^T x + b = 0
+\theta^{T} x + b = 0
 $$
 
 in the full feature space.
@@ -628,3 +628,5 @@ The intended progression is:
 6. inspect its performance and decision boundary.
 
 The notebooks are designed to complement the lecture rather than replace the conceptual explanations above.
+
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).
