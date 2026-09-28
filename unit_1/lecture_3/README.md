@@ -29,7 +29,7 @@ The notebook follows the same order we study the material:
 For an input vector $x$, the classifier score is
 
 $$
-f(x)=\theta^T x+\theta_0
+f(x)=\theta^{T} x+\theta_0
 $$
 
 Prediction is based on the sign of the score:
@@ -44,7 +44,7 @@ $$
 The decision boundary is
 
 $$
-\theta^T x+\theta_0=0
+\theta^{T} x+\theta_0=0
 $$
 
 In two dimensions this is a line. In higher dimensions it is a hyperplane.
@@ -56,7 +56,7 @@ In two dimensions this is a line. In higher dimensions it is a hyperplane.
 For training example $(x_i,y_i)$ with $y_i\in\{-1,+1\}$:
 
 $$
-z_i=y_i\left(\theta^T x_i+\theta_0\right)
+z_i=y_i\left(\theta^{T} x_i+\theta_0\right)
 $$
 
 The sign tells us whether the example is correctly classified, while the magnitude measures how confidently it lies on the correct side of the boundary.
@@ -86,7 +86,7 @@ Therefore:
 The average hinge loss is
 
 $$
-L(\theta,\theta_0)=\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^T x_i+\theta_0\right)\right)
+L(\theta,\theta_0)=\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^{T} x_i+\theta_0\right)\right)
 $$
 
 ---
@@ -120,7 +120,7 @@ Expanded:
 
 $$
 J(\theta,\theta_0;\alpha)
-=\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^T x_i+\theta_0\right)\right)
+=\frac{1}{n}\sum_{i=1}^{n}\max\left(0,1-y_i\left(\theta^{T} x_i+\theta_0\right)\right)
 +\frac{\alpha}{2}\lVert\theta\rVert_2^2
 $$
 
@@ -200,7 +200,7 @@ These values are plotted directly by the notebook.
 
 For each **fixed** value of `alpha`, the optimizer finds the best model parameters.
 
-To keep the notation unambiguous and GitHub-safe, we call these parameters the **best parameters for alpha**:
+We call these parameters the **best parameters for alpha**:
 
 $$
 (\theta_{\mathrm{best}}(\alpha),\theta_{0,\mathrm{best}}(\alpha))
@@ -301,7 +301,7 @@ The purpose of the library comparison is not to replace the implementation. It i
 When working through the notebook, make sure you can explain these relationships without looking them up:
 
 $$
-f(x)=\theta^T x+\theta_0
+f(x)=\theta^{T} x+\theta_0
 $$
 
 $$
@@ -336,3 +336,5 @@ The last two equations are especially important: the first is the **inner parame
 Open `lecture_3_linear_svm_from_scratch.ipynb` in Jupyter or VS Code and run the cells from top to bottom.
 
 The notebook is self-contained: code, calculations, training logs, and plots are generated when the notebook is executed. Nothing needs to be loaded from a `.py` or `.png` file.
+
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

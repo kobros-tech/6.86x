@@ -32,14 +32,14 @@ In Unit 1, a linear classifier produced a score and converted it into a class de
 For regression, the output itself is the prediction:
 
 $$
-f(x;\theta)=\theta^T x.
+f(x;\theta)=\theta^{T} x.
 $$
 
 Here:
 
 - $x$ is the feature vector;
 - $\theta$ is the parameter vector;
-- $\theta^T x$ is a real-valued prediction.
+- $\theta^{T} x$ is a real-valued prediction.
 
 The lecture initially writes the model with an intercept:
 
@@ -60,7 +60,7 @@ For convenience, the intercept can be represented as an additional feature whose
 For a training example $(x_i,y_i)$, the model predicts
 
 $$
-\hat y_i=\theta^T x_i.
+\hat y_i=\theta^{T} x_i.
 $$
 
 The prediction error is
@@ -74,7 +74,7 @@ A learning algorithm needs a numerical way to measure how bad this error is.
 Lecture 5 uses **squared error**:
 
 $$
-L_i(\theta)=\frac{1}{2}\left(\theta^T x_i-y_i\right)^2.
+L_i(\theta)=\frac{1}{2}\left(\theta^{T} x_i-y_i\right)^2.
 $$
 
 The factor $\frac{1}{2}$ is convenient when differentiating; it does not change which parameter vector minimizes the objective.
@@ -91,7 +91,7 @@ Squaring has two useful effects:
 For $n$ training examples, we combine the individual losses into an empirical objective:
 
 $$
-J(\theta)=\frac{1}{2n}\sum_{i=1}^{n}\left(\theta^T x_i-y_i\right)^2.
+J(\theta)=\frac{1}{2n}\sum_{i=1}^{n}\left(\theta^{T} x_i-y_i\right)^2.
 $$
 
 The learning problem is therefore
@@ -160,10 +160,10 @@ Put the training examples into a design matrix:
 $$
 X=
 \begin{bmatrix}
- x_1^T \\
- x_2^T \\
+ x_1^{T} \\
+ x_2^{T} \\
  \vdots \\
- x_n^T
+ x_n^{T}
 \end{bmatrix}
 $$
 
@@ -206,13 +206,13 @@ $$
 the gradient with respect to $\theta$ is
 
 $$
-\nabla J(\theta)=\frac{1}{n}X^T(X\theta-y).
+\nabla J(\theta)=\frac{1}{n}X^{T}(X\theta-y).
 $$
 
 The interpretation is useful:
 
 - $X\theta-y$ contains the current prediction errors;
-- $X^T$ maps those errors back onto the parameter directions;
+- $X^{T}$ maps those errors back onto the parameter directions;
 - the result tells us how the objective changes if we change each parameter.
 
 To **minimize** the objective, we move in the opposite direction of the gradient.
@@ -233,7 +233,7 @@ Substituting the gradient gives
 
 $$
 \theta\leftarrow
-\theta-\frac{\eta}{n}X^T(X\theta-y).
+\theta-\frac{\eta}{n}X^{T}(X\theta-y).
 $$
 
 The learning loop is therefore:
@@ -290,19 +290,19 @@ $$
 Therefore,
 
 $$
-X^T(X\theta-y)=0.
+X^{T}(X\theta-y)=0.
 $$
 
 Rearranging gives the normal equations:
 
 $$
-X^TX\theta=X^Ty.
+X^{T}X\theta=X^{T}y.
 $$
 
-When $X^TX$ is invertible, the solution can be written as
+When $X^{T}X$ is invertible, the solution can be written as
 
 $$
-\theta^*=(X^TX)^{-1}X^Ty.
+\theta^*=(X^{T}X)^{-1}X^{T}y.
 $$
 
 This is the **closed-form linear regression solution**.
@@ -406,7 +406,7 @@ $$
 A linear model in this feature space becomes
 
 $$
-\hat y=\theta^T\phi(z).
+\hat y=\theta^{T}\phi(z).
 $$
 
 The model is still linear in $\theta$, even though the prediction as a function of the original variable $z$ can be nonlinear.
@@ -534,7 +534,7 @@ They are not the same quantity.
 The matrix gradient is
 
 $$
-\nabla J(\theta)=\frac{1}{n}X^T(X\theta-y).
+\nabla J(\theta)=\frac{1}{n}X^{T}(X\theta-y).
 $$
 
 The transpose is what maps the example-wise errors back into parameter space.
@@ -548,7 +548,7 @@ A learning rate that is too large can cause unstable updates or divergence. A le
 Although
 
 $$
-\theta^*=(X^TX)^{-1}X^Ty
+\theta^*=(X^{T}X)^{-1}X^{T}y
 $$
 
 is the useful mathematical expression, numerical implementations should generally solve the linear system directly.
@@ -563,13 +563,13 @@ If you remember only the following, you have the core of Lecture 5:
 2. A linear regression prediction can be written as
 
 $$
-\hat y=\theta^T x.
+\hat y=\theta^{T} x.
 $$
 
 3. For squared loss, the empirical objective is
 
 $$
-J(\theta)=\frac{1}{2n}\sum_{i=1}^{n}\left(\theta^T x_i-y_i\right)^2.
+J(\theta)=\frac{1}{2n}\sum_{i=1}^{n}\left(\theta^{T} x_i-y_i\right)^2.
 $$
 
 4. In matrix form,
@@ -581,7 +581,7 @@ $$
 5. Its gradient is
 
 $$
-\nabla J(\theta)=\frac{1}{n}X^T(X\theta-y).
+\nabla J(\theta)=\frac{1}{n}X^{T}(X\theta-y).
 $$
 
 6. Gradient descent minimizes the objective using
@@ -593,13 +593,13 @@ $$
 7. Setting the gradient to zero gives the normal equations:
 
 $$
-X^TX\theta=X^Ty.
+X^{T}X\theta=X^{T}y.
 $$
 
 8. When the system is invertible, the closed-form solution is
 
 $$
-\theta^*=(X^TX)^{-1}X^Ty.
+\theta^*=(X^{T}X)^{-1}X^{T}y.
 $$
 
 9. Gradient descent and the closed-form method are two different ways of solving the same least-squares problem.
@@ -642,11 +642,4 @@ The most important transition is that we are no longer restricted to predicting 
 
 This README is a study guide rather than a transcription of the MIT lecture. The executable demo is deliberately small so that every mathematical quantity can be traced directly to the Python implementation.
 
-The repository uses conservative GitHub MathJax conventions:
-
-- display equations use `$$` on separate lines;
-- inline mathematics uses `$...$`;
-- multiline matrices use explicit `\\` row separators;
-- `aligned` and `cases` environments stay completely inside display blocks;
-- unsupported or fragile LaTeX macros are avoided;
-- mathematical edits should be checked on the rendered GitHub page.
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).

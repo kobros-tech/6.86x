@@ -85,16 +85,7 @@ Each lecture README is a study guide rather than a copy of the lecture notes. It
 
 The notebooks are the executable learning artifacts for lecture and recitation demonstrations. Project 1 uses ordinary Python modules for reusable algorithms, data processing, and automated tests, and provides `automatic_review_analyzer.ipynb` as a presentation and experimentation layer for running comparisons and generating visualizations.
 
-### Equation-rendering safeguard
-
-All mathematical READMEs in this unit should follow the repository's conservative GitHub MathJax conventions:
-
-- use `$$` on separate lines for display equations;
-- use `$...$` for inline mathematics;
-- use explicit `\\` row separators in matrices and multiline environments;
-- keep `cases` and `aligned` environments completely inside display blocks;
-- avoid malformed LaTeX such as single-backslash matrix row separators;
-- verify the **rendered GitHub page** after mathematical edits.
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../MATH_NOTATION.md).
 
 ## Unit 0 relationship
 

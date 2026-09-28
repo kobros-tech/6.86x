@@ -566,18 +566,7 @@ The notebook is the primary executable artifact; this README is the mathematical
 
 ---
 
-## Equation-rendering safeguard
-
-The equations in this README intentionally follow the same conservative GitHub MathJax style used in Lecture 2 and the later lecture READMEs:
-
-- display equations use `$$` on separate lines;
-- inline mathematics uses `$...$`;
-- transposes use the explicit form `^{T}`;
-- the sign function uses `\mathrm{sign}(...)`;
-- multiline matrices use explicit `\\` row separators;
-- `cases` and `aligned` environments remain entirely inside a display block;
-- equations are never placed inside Markdown code blocks;
-- no single-backslash matrix row separators are used.
+For repository-wide Markdown and LaTeX conventions, see [MATH_NOTATION.md](../../MATH_NOTATION.md).
 
 When editing this file, preserve these conventions and verify the **rendered GitHub page**, not only the raw Markdown source.
 

@@ -35,7 +35,7 @@ Softmax regression (also called multinomial logistic regression) is a **direct m
 The model keeps one parameter vector $\theta_k$ per class $k$, exactly the way the multiclass SVM does. For an input $x$, each class gets a raw score
 
 $$
-z_k = \theta_k^T x.
+z_k = \theta_k^{T} x.
 $$
 
 Unlike the SVM, Softmax converts these scores into a genuine probability distribution using the **softmax function**:
